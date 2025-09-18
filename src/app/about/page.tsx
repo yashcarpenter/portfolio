@@ -10,7 +10,7 @@ export default function AboutPage() {
       <main>
         {/* Hero Section */}
             <section 
-              className="pt-20 pb-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100"
+              className="pt-20 pb-4 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100"
               style={{ paddingTop: '80px' }}
             >
           <div className="max-w-7xl mx-auto text-center">
@@ -26,7 +26,7 @@ export default function AboutPage() {
             </p>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
               <div className="text-center">
                 <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">1+</div>
                 <div className="text-gray-600 font-medium">Years Experience</div>
@@ -43,12 +43,12 @@ export default function AboutPage() {
                 <div className="text-3xl sm:text-4xl font-bold text-orange-600 mb-2">24/7</div>
                 <div className="text-gray-600 font-medium">Passionate</div>
               </div>
-            </div>
+            </div> */}
           </div>
         </section>
 
         {/* Personal Story Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white mt-16">
+        <section className="py-8 px-4 sm:px-6 lg:px-8 bg-white mt-16">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               {/* Personal Info */}

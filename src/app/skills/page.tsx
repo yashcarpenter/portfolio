@@ -89,7 +89,7 @@ export default function SkillsPage() {
       <main>
         {/* Hero Section */}
             <section 
-              className="pt-20 pb-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100"
+              className="pt-20 pb-4 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100"
               style={{ paddingTop: '80px' }}
             >
           <div className="max-w-7xl mx-auto text-center">
@@ -106,7 +106,7 @@ export default function SkillsPage() {
             </p>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
               <div className="text-center">
                 <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">4+</div>
                 <div className="text-gray-600 font-medium">Skill Categories</div>
@@ -123,12 +123,12 @@ export default function SkillsPage() {
                 <div className="text-3xl sm:text-4xl font-bold text-orange-600 mb-2">100%</div>
                 <div className="text-gray-600 font-medium">Dedicated</div>
               </div>
-            </div>
+            </div> */}
           </div>
         </section>
 
         {/* Skills Categories Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white mt-16">
+        <section className="py-8 px-4 sm:px-6 lg:px-8 bg-white mt-16">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
