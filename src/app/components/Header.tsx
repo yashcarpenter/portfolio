@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,17 +34,17 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <a
-              href="/"
-              className="group text-2xl font-bold text-gray-900 hover:text-blue-600 transition-all duration-300 transform hover:scale-105"
-            >
-              <span className="relative">
-                Yash Carpenter
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
-              </span>
-            </a>
-          </div>
+              <div className="flex-shrink-0">
+                <Link
+                  href="/"
+                  className="group text-2xl font-bold text-gray-900 hover:text-blue-600 transition-all duration-300 transform hover:scale-105"
+                >
+                  <span className="relative">
+                    Yash Carpenter
+                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
+                  </span>
+                </Link>
+              </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-1">

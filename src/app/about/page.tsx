@@ -56,17 +56,17 @@ export default function AboutPage() {
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-6">My Story</h2>
                   <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                    I'm Yash Carpenter, a passionate backend developer with 1+ years of experience in building 
+                    I&apos;m Yash Carpenter, a passionate backend developer with 1+ years of experience in building 
                     scalable and high-performance systems. My journey in technology started with a curiosity 
                     about how things work behind the scenes, which led me to specialize in backend development.
                   </p>
                   <p className="text-lg text-gray-600 leading-relaxed mb-6">
                     I believe in the power of clean code, robust architecture, and continuous learning. 
-                    My experience spans across startups and fast-paced environments where I've learned to 
+                    My experience spans across startups and fast-paced environments where I&apos;ve learned to 
                     adapt quickly and deliver solutions that make a real impact.
                   </p>
                   <p className="text-lg text-gray-600 leading-relaxed">
-                    When I'm not coding, you'll find me exploring new technologies, contributing to open-source 
+                    When I&apos;m not coding, you&apos;ll find me exploring new technologies, contributing to open-source 
                     projects, or sharing knowledge with the developer community.
                   </p>
                 </div>
@@ -140,7 +140,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Performance</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  I'm obsessed with building fast, efficient systems that can handle scale. 
+                  I&apos;m obsessed with building fast, efficient systems that can handle scale. 
                   Performance optimization is at the core of everything I build.
                 </p>
               </div>
@@ -153,8 +153,8 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Learning</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Technology evolves rapidly, and I'm committed to staying current. 
-                  Continuous learning is not just a habit, it's a way of life.
+                  Technology evolves rapidly, and I&apos;m committed to staying current. 
+                  Continuous learning is not just a habit, it&apos;s a way of life.
                 </p>
               </div>
 
@@ -180,7 +180,7 @@ export default function AboutPage() {
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Quality</h3>
                 <p className="text-gray-600 leading-relaxed">
                   I believe in writing clean, maintainable code that stands the test of time. 
-                  Quality is never an accident; it's always the result of intention.
+                  Quality is never an accident; it&apos;s always the result of intention.
                 </p>
               </div>
 
@@ -192,7 +192,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Growth</h3>
                 <p className="text-gray-600 leading-relaxed">
-                  I'm always looking for ways to improve, both personally and professionally. 
+                  I&apos;m always looking for ways to improve, both personally and professionally. 
                   Growth comes from stepping outside comfort zones and embracing challenges.
                 </p>
               </div>
@@ -207,8 +207,8 @@ export default function AboutPage() {
               Ready to Work Together?
             </h2>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              I'm always excited to take on new challenges and collaborate on interesting projects. 
-              Let's discuss how we can bring your ideas to life.
+              I&apos;m always excited to take on new challenges and collaborate on interesting projects. 
+              Let&apos;s discuss how we can bring your ideas to life.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a

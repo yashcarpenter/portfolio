@@ -38,12 +38,12 @@ export default function ContactPage() {
               Get In Touch
             </div>
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-8 leading-tight">
-              Let's Work
+              Let&apos;s Work
               <span className="block text-blue-600 mt-2">Together</span>
             </h1>
             <p className="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-12">
-              Ready to build something amazing? I'm always interested in new opportunities and exciting projects. 
-              Let's discuss how we can bring your ideas to life.
+              Ready to build something amazing? I&apos;m always interested in new opportunities and exciting projects. 
+              Let&apos;s discuss how we can bring your ideas to life.
             </p>
             
             {/* Quick Stats */}
@@ -363,11 +363,11 @@ export default function ContactPage() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                Let's Discuss Your Project
+                Let&apos;s Discuss Your Project
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                I'm always excited to work on new projects and challenges. Whether you have a specific project in mind 
-                or just want to discuss possibilities, I'd love to hear from you.
+                I&apos;m always excited to work on new projects and challenges. Whether you have a specific project in mind 
+                or just want to discuss possibilities, I&apos;d love to hear from you.
               </p>
             </div>
 

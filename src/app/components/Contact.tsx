@@ -35,10 +35,10 @@ export default function Contact() {
             Get In Touch
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-            Let's Work Together
+            Let&apos;s Work Together
           </h2>
           <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Ready to build something amazing? I'm always interested in new opportunities and exciting projects.
+            Ready to build something amazing? I&apos;m always interested in new opportunities and exciting projects.
           </p>
         </div>
 

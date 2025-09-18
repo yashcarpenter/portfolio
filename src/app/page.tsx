@@ -94,7 +94,7 @@ export default function Home() {
               Ready to Build Something Amazing?
             </h2>
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Let's discuss your project and explore how we can work together to bring your ideas to life.
+                  Let&apos;s discuss your project and explore how we can work together to bring your ideas to life.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
