@@ -76,7 +76,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h4 className="text-lg font-semibold text-gray-900">Phone</h4>
-                    <p className="text-gray-600">+91 7693858303</p>
+                    <p className="text-gray-600">+91 *******303</p>
                     <a 
                       href="tel:+917693858303" 
                       className="text-blue-600 hover:text-blue-700 transition-colors"

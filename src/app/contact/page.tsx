@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
+  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
+  const { ref: contactRef, isVisible: contactVisible } = useScrollAnimation();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +33,12 @@ export default function ContactPage() {
       <main>
         {/* Hero Section */}
             <section 
-              className="pt-20 pb-4 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100"
+              ref={heroRef}
+              className={`pt-20 pb-4 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100 transition-all duration-1000 ${
+                heroVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-8'
+              }`}
               style={{ paddingTop: '80px' }}
             >
           <div className="max-w-7xl mx-auto text-center">
@@ -69,7 +77,14 @@ export default function ContactPage() {
         </section>
 
         {/* Contact Information & Form */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white mt-4">
+        <section 
+          ref={contactRef}
+          className={`py-16 px-4 sm:px-6 lg:px-8 bg-white mt-4 transition-all duration-1000 ${
+            contactVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
               {/* Contact Information */}
@@ -105,10 +120,10 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
-                      <p className="text-gray-600">+91 7693858303</p>
-                      <a href="tel:+917693858303" className="text-blue-600 hover:text-blue-700 transition-colors">
+                      <p className="text-gray-600">+91 *******303</p>
+                      {/* <a href="tel:+917693858303" className="text-blue-600 hover:text-blue-700 transition-colors">
                         Call me
-                      </a>
+                      </a> */}
                     </div>
                   </div>
 
