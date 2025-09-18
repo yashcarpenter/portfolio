@@ -63,29 +63,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Quick Stats */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white mt-16">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div>
-                <div className="text-4xl font-bold text-blue-600 mb-2">1+</div>
-                <div className="text-gray-600">Years Experience</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-blue-600 mb-2">5+</div>
-                <div className="text-gray-600">Projects Built</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-blue-600 mb-2">100%</div>
-                <div className="text-gray-600">Client Satisfaction</div>
-              </div>
-              <div>
-                <div className="text-4xl font-bold text-blue-600 mb-2">24/7</div>
-                <div className="text-gray-600">Dedication</div>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Call to Action */}
         <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 mt-16">

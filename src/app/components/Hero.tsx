@@ -37,18 +37,22 @@ export default function Hero() {
 
           {/* Stats Section */}
           <div className="mb-12">
-            <div className="flex flex-wrap justify-center gap-8 sm:gap-12">
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">1+</div>
-                <div className="text-sm sm:text-base text-gray-600">Years Experience</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-4xl mx-auto">
+              <div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">1+</div>
+                <div className="text-gray-600">Years Experience</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">5+</div>
-                <div className="text-sm sm:text-base text-gray-600">Projects Built</div>
+              <div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">5+</div>
+                <div className="text-gray-600">Projects Built</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">100%</div>
-                <div className="text-sm sm:text-base text-gray-600">Dedicated</div>
+              <div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">100%</div>
+                <div className="text-gray-600">Client Satisfaction</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">24/7</div>
+                <div className="text-gray-600">Dedication</div>
               </div>
             </div>
           </div>
