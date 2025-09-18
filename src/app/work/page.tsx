@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
 
 interface Project {
   id: number;
@@ -126,6 +127,8 @@ const categories = ["All", "Backend", "Full Stack"];
 
 export default function WorkPage() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
+  const { ref: projectsRef, isVisible: projectsVisible } = useScrollAnimation();
 
   const filteredProjects = activeFilter === "All"
     ? projects
@@ -165,7 +168,12 @@ export default function WorkPage() {
       <main>
         {/* Hero Section */}
             <section 
-              className="pt-20 pb-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100"
+              ref={heroRef}
+              className={`pt-20 pb-4 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100 transition-all duration-1000 ${
+                heroVisible 
+                  ? 'opacity-100 translate-y-0' 
+                  : 'opacity-0 translate-y-8'
+              }`}
               style={{ paddingTop: '80px' }}
             >
           <div className="max-w-7xl mx-auto text-center">
@@ -181,7 +189,7 @@ export default function WorkPage() {
             </p>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
               <div className="text-center">
                 <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">6+</div>
                 <div className="text-gray-600 font-medium">Projects</div>
@@ -198,12 +206,19 @@ export default function WorkPage() {
                 <div className="text-3xl sm:text-4xl font-bold text-orange-600 mb-2">24/7</div>
                 <div className="text-gray-600 font-medium">Innovation</div>
               </div>
-            </div>
+            </div> */}
           </div>
         </section>
 
         {/* Professional Experience Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white mt-16">
+        <section 
+          ref={projectsRef}
+          className={`py-16 px-4 sm:px-6 lg:px-8 bg-white mt-0 transition-all duration-1000 ${
+            projectsVisible 
+              ? 'opacity-100 translate-y-0' 
+              : 'opacity-0 translate-y-8'
+          }`}
+        >
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
               <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">

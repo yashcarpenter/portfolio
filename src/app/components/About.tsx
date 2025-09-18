@@ -41,7 +41,8 @@ export default function About() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 text-sm font-medium mb-6">
+          <div className="inline-flex items-center px-4 py-2 rounded-md bg-blue-100 text-blue-700 text-sm font-medium mb-6">
+            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
             About Me
           </div>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
