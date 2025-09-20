@@ -1,28 +1,10 @@
 "use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
 
 export default function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Handle GitHub Pages routing
-    if (typeof window !== 'undefined') {
-      const url = window.location.href;
-      
-      // Check if we have a query parameter with the route
-      if (url.includes('/?/')) {
-        const route = url.split('/?/')[1].split('&')[0].replace(/~and~/g, '&');
-        if (route) {
-          router.replace('/' + route);
-        }
-      }
-    }
-  }, [router]);
   return (
     <div className="min-h-screen bg-white">
       <Header />

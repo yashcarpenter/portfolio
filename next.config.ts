@@ -1,17 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  trailingSlash: true,
+  // Only use static export for GitHub Pages, not for Vercel
+  ...(process.env.DEPLOY_TARGET === 'github' && {
+    output: 'export',
+    trailingSlash: true,
+    distDir: 'out',
+  }),
   images: {
     unoptimized: true
   },
-  basePath: process.env.NODE_ENV === 'production' ? '/portflio' : '',
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/portflio' : '',
-  distDir: 'out',
-  generateBuildId: async () => {
-    return 'build-' + Date.now()
-  },
+  // Only add basePath for GitHub Pages
+  ...(process.env.DEPLOY_TARGET === 'github' && {
+    basePath: '/portflio',
+    assetPrefix: '/portflio',
+  }),
 };
 
 export default nextConfig;

@@ -1,4 +1,4 @@
-# Portfolio Deployment Guide
+# Deployment Guide
 
 This portfolio can be deployed to both **Vercel** and **GitHub Pages** with different configurations.
 
@@ -78,37 +78,3 @@ The configuration automatically detects the deployment target:
 - **GitHub Pages**: Uses `npm run build:github` (static export)
 
 No code changes needed when switching platforms!
-
-## 🛠️ Local Testing
-
-### Test Vercel Build:
-```bash
-npm run build
-npm run start
-# Visit http://localhost:3000
-```
-
-### Test GitHub Pages Build:
-```bash
-npm run build:github
-cd out
-python3 -m http.server 8000
-# Visit http://localhost:8000
-```
-
-## 🚨 Troubleshooting
-
-### Vercel Issues:
-- Check Vercel dashboard for build logs
-- Ensure all dependencies are in package.json
-- Verify the build command works: `npm run build`
-
-### GitHub Pages Issues:
-- Check Actions tab for error messages
-- Verify Pages source is set to "GitHub Actions"
-- Wait a few minutes for GitHub Pages to update
-
-### 404 Errors on GitHub Pages:
-- This is normal for client-side routing
-- Users need to navigate from the homepage
-- Consider using Vercel for better routing
