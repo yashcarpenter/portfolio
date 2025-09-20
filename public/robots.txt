@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://yashcarpenter.dev/sitemap.xml
+Sitemap: https://yashcarpenter.github.io/portflio/sitemap.xml
