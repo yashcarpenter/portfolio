@@ -13,6 +13,13 @@
 4. Under "Source", select "GitHub Actions"
 5. Save the settings
 
+### 1.1. Alternative: Enable Pages via Repository Settings
+If the above doesn't work, try this method:
+1. Go to "Settings" → "Pages"
+2. Under "Source", select "Deploy from a branch"
+3. Select "gh-pages" branch and "/ (root)" folder
+4. Click "Save"
+
 ### 2. Push to GitHub
 ```bash
 git add .

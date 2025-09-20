@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
   },
   basePath: process.env.NODE_ENV === 'production' ? '/portflio' : '',
   assetPrefix: process.env.NODE_ENV === 'production' ? '/portflio' : '',
+  distDir: 'out',
+  generateBuildId: async () => {
+    return 'build-' + Date.now()
+  },
 };
 
 export default nextConfig;
