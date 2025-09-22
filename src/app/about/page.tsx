@@ -41,7 +41,8 @@ export default function AboutPage() {
                   <span className="block text-blue-600 mt-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-shift">Yash Carpenter</span>
                 </h1>
                 <p className="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-12">
-                  A passionate backend developer with a love for building scalable systems and solving complex problems.
+                  Crafting enterprise-grade backend solutions that power millions of transactions. 
+                  Specializing in microservices architecture, high-performance APIs, and scalable system design.
                 </p>
             
             {/* Quick Stats */}
@@ -87,18 +88,20 @@ export default function AboutPage() {
                     </span>
                   </h2>
                   <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                    I&apos;m Yash Carpenter, a passionate backend developer with 1+ years of experience in building 
-                    scalable and high-performance systems. My journey in technology started with a curiosity 
-                    about how things work behind the scenes, which led me to specialize in backend development.
+                    I&apos;m Yash Carpenter, a passionate backend developer with 1+ years of experience crafting 
+                    enterprise-grade, scalable systems that power millions of transactions. I graduated with distinction 
+                    in 2024 from Shri G.S. Institute of Technology and Science, Indore, with a Bachelor of Technology 
+                    in Information Technology.
                   </p>
                   <p className="text-lg text-gray-600 leading-relaxed mb-6">
-                    I believe in the power of clean code, robust architecture, and continuous learning. 
-                    My experience spans across startups and fast-paced environments where I&apos;ve learned to 
-                    adapt quickly and deliver solutions that make a real impact.
+                    My professional journey began with a transformative internship at Groww, India&apos;s leading 
+                    investment platform, where I contributed to backend systems handling millions of users. This 
+                    experience led to my current role as a Software Development Engineer at Volt Money, where I 
+                    architect and develop robust financial technology solutions that process high-volume transactions 
+                    with 99.9% uptime.
                   </p>
                   <p className="text-lg text-gray-600 leading-relaxed">
-                    When I&apos;m not coding, you&apos;ll find me exploring new technologies, contributing to open-source 
-                    projects, or sharing knowledge with the developer community.
+                  When I&apos;m not coding, you&apos;ll find me watching movies, hanging out or playing games.
                   </p>
                 </div>
 
@@ -109,16 +112,16 @@ export default function AboutPage() {
                     <div className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">Years Experience</div>
                   </div>
                   <div className="text-center p-6 bg-gray-50 rounded-lg group hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-500 hover:scale-105 hover:shadow-lg cursor-pointer">
+                    <div className="text-3xl font-bold text-blue-600 mb-2 group-hover:text-purple-600 transition-colors duration-300">500+</div>
+                    <div className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">DSA Problems Solved</div>
+                  </div>
+                  <div className="text-center p-6 bg-gray-50 rounded-lg group hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-500 hover:scale-105 hover:shadow-lg cursor-pointer">
                     <div className="text-3xl font-bold text-blue-600 mb-2 group-hover:text-purple-600 transition-colors duration-300">5+</div>
                     <div className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">Projects Built</div>
                   </div>
                   <div className="text-center p-6 bg-gray-50 rounded-lg group hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-500 hover:scale-105 hover:shadow-lg cursor-pointer">
-                    <div className="text-3xl font-bold text-blue-600 mb-2 group-hover:text-purple-600 transition-colors duration-300">100%</div>
-                    <div className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">Dedicated</div>
-                  </div>
-                  <div className="text-center p-6 bg-gray-50 rounded-lg group hover:bg-gradient-to-br hover:from-blue-50 hover:to-purple-50 transition-all duration-500 hover:scale-105 hover:shadow-lg cursor-pointer">
-                    <div className="text-3xl font-bold text-blue-600 mb-2 group-hover:text-purple-600 transition-colors duration-300">24/7</div>
-                    <div className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">Learning</div>
+                    <div className="text-3xl font-bold text-blue-600 mb-2 group-hover:text-purple-600 transition-colors duration-300">1700+</div>
+                    <div className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">CP Rating</div>
                   </div>
                 </div>
               </div>
@@ -243,48 +246,89 @@ export default function AboutPage() {
           </div>
         </section>
 
-            {/* Call to Action */}
+            {/* Call to Action with Education */}
             <section 
               ref={ctaRef}
-              className={`py-24 px-4 sm:px-6 lg:px-8 bg-white mt-16 transition-all duration-1000 ${
+              className={`py-24 px-4 sm:px-6 lg:px-8 bg-white mt-0 transition-all duration-1000 ${
                 ctaVisible 
                   ? 'opacity-100 translate-y-0' 
                   : 'opacity-0 translate-y-8'
               }`}
             >
-              <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-4xl font-bold text-gray-900 mb-6 group">
-                  <span className="relative">
-                    Ready to Work Together?
-                    <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-64 transition-all duration-500"></span>
-                  </span>
-                </h2>
-                <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                  I&apos;m always excited to take on new challenges and collaborate on interesting projects. 
-                  Let&apos;s discuss how we can bring your ideas to life.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/work"
-                className="group inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-300">View My Work</span>
-                <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </a>
-              <a
-                href="/contact"
-                className="group inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-md border-2 border-blue-600 hover:bg-blue-50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
-              >
-                <svg className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                <span className="group-hover:translate-x-1 transition-transform duration-300">Get In Touch</span>
-              </a>
-            </div>
-          </div>
-        </section>
+              <div className="max-w-7xl mx-auto">
+                {/* Education Section */}
+                <div className="mb-16">
+                  <div className="text-center mb-12">
+                    <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
+                      Education
+                    </h2>
+                    <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                      My academic journey and educational background
+                    </p>
+                  </div>
+
+                  <div className="max-w-4xl mx-auto">
+                    <div className="bg-gray-50 rounded-lg p-8 shadow-sm border border-gray-200">
+                      <div className="space-y-8">
+                        <div className="border-l-4 border-blue-500 pl-6" style={{ paddingLeft: '16px' }}>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2">B.Tech in Information Technology</h3>
+                          <p className="text-gray-600 font-medium mb-1">Shri G.S. Institute of Technology and Science, Indore</p>
+                          <p className="text-gray-500 text-sm">2020 - 2024</p>
+                          <p className="text-gray-600 mt-3 leading-relaxed">
+                            Graduated with distinction in Information Technology
+                          </p>
+                        </div>
+                        
+                        <div className="border-l-4 border-green-500 pl-6" style={{ paddingLeft: '16px' }}>
+                          <h3 className="text-xl font-bold text-gray-900 mb-2">XII (Higher Secondary)</h3>
+                          <p className="text-gray-600 font-medium mb-1">Ideal Convent H.S. School, Biaora</p>
+                          <p className="text-gray-500 text-sm">2018 - 2019</p>
+                          <p className="text-gray-600 mt-3 leading-relaxed">
+                            Completed higher secondary education with focus on science and mathematics, 
+                            laying the foundation for technical studies and problem-solving skills.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ready to Work Together */}
+                <div className="max-w-4xl mx-auto text-center">
+                  <h2 className="text-4xl font-bold text-gray-900 mb-6 group">
+                    <span className="relative">
+                      Ready to Work Together?
+                      <span className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-blue-600 to-purple-600 group-hover:w-64 transition-all duration-500"></span>
+                    </span>
+                  </h2>
+                  <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                    I&apos;m always excited to take on new challenges and collaborate on interesting projects. 
+                    Let&apos;s discuss how we can bring your ideas to life.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a
+                      href="/work"
+                      className="group inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
+                    >
+                      <span className="group-hover:translate-x-1 transition-transform duration-300">View My Work</span>
+                      <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </a>
+                    <a
+                      href="/contact"
+                      className="group inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-md border-2 border-blue-600 hover:bg-blue-50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
+                    >
+                      <svg className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                      </svg>
+                      <span className="group-hover:translate-x-1 transition-transform duration-300">Get In Touch</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </section>
+
       </main>
       <div className="mt-16">
         <Footer />

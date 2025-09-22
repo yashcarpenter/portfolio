@@ -86,40 +86,6 @@ const projects: Project[] = [
     ],
     liveUrl: "#",
     githubUrl: "#"
-  },
-  {
-    id: 5,
-    title: "Microservices Architecture",
-    description: "Designed and implemented a scalable microservices architecture for a fintech application, improving system reliability and maintainability.",
-    technologies: ["Spring Boot", "Docker", "Kubernetes", "PostgreSQL", "Redis", "AWS"],
-    category: "Backend",
-    impact: "Improved system reliability by 40% and reduced deployment time by 60%",
-    features: [
-      "Containerized microservices with Docker",
-      "Kubernetes orchestration for scalability",
-      "Service mesh implementation",
-      "Distributed logging and monitoring",
-      "API gateway for request routing"
-    ],
-    liveUrl: "#",
-    githubUrl: "#"
-  },
-  {
-    id: 6,
-    title: "Real-time Analytics Dashboard",
-    description: "Built a real-time analytics dashboard for monitoring system performance and user behavior, providing actionable insights to stakeholders.",
-    technologies: ["ReactJS", "Node.js", "WebSocket", "MongoDB", "Chart.js"],
-    category: "Full Stack",
-    impact: "Reduced decision-making time by 50% through real-time insights",
-    features: [
-      "Real-time data visualization",
-      "Interactive charts and graphs",
-      "Customizable dashboard widgets",
-      "Export functionality for reports",
-      "Role-based access control"
-    ],
-    liveUrl: "#",
-    githubUrl: "#"
   }
 ];
 
