@@ -354,7 +354,7 @@ export default function ContactPage() {
                           Message sent successfully!
                         </h3>
                         <div className="mt-2 text-sm text-green-700">
-                          <p>Thank you for your message. I'll get back to you within 24 hours.</p>
+                          <p>Thank you for your message. I&apos;ll get back to you within 24 hours.</p>
                         </div>
                       </div>
                     </div>
