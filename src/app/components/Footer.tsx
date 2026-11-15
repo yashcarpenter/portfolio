@@ -55,9 +55,8 @@ export default function Footer() {
           <SocialLinks size="sm" className="md:justify-end" />
         </Reveal>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-2 text-xs text-subtle sm:flex-row">
+        <div className="mt-10 text-center text-xs text-subtle sm:text-left">
           <p>© {new Date().getFullYear()} {site.name}. All rights reserved.</p>
-          <p className="font-mono">Built with Next.js &amp; Tailwind CSS</p>
         </div>
       </div>
     </footer>

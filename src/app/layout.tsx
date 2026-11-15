@@ -5,6 +5,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Background from "./components/motion/Background";
 import MotionEffects from "./components/motion/MotionEffects";
+import SmoothScroll from "./components/motion/SmoothScroll";
+import CustomCursor from "./components/motion/CustomCursor";
+import { CurtainProvider } from "./components/motion/Curtain";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -57,12 +60,16 @@ export default function RootLayout({
           Skip to content
         </a>
         <Background />
+        <SmoothScroll />
         <MotionEffects />
-        <Header />
-        <main id="main" className="relative">
-          {children}
-        </main>
-        <Footer />
+        <CustomCursor />
+        <CurtainProvider>
+          <Header />
+          <main id="main" className="relative">
+            {children}
+          </main>
+          <Footer />
+        </CurtainProvider>
       </body>
     </html>
   );

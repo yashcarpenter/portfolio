@@ -5,6 +5,7 @@ import emailjs from '@emailjs/browser';
 import PageHero from "../components/ui/PageHero";
 import Reveal from "../components/motion/Reveal";
 import SocialLinks from "../components/ui/SocialLinks";
+import ScrambleText from "../components/motion/ScrambleText";
 import { AlertCircle, ArrowRight, ArrowUpRight, Check, Clock, Download, FileText, Mail, MapPin, Phone } from "../components/ui/Icons";
 import { site } from "../lib/site";
 import { cn } from "../lib/utils";
@@ -105,15 +106,17 @@ export default function ContactPage() {
 
             {info.map(({ Icon, label, value, action }, i) => (
               <Reveal key={label} delay={100 + i * 90}>
-                <div className="spotlight group flex items-center gap-5 p-5">
+                <div className="spotlight group flex items-center gap-4 p-4 sm:gap-5 sm:p-5">
                   <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br from-a1/25 to-a2/10 text-white transition-transform duration-700 ease-[var(--ease)] group-hover:-rotate-6">
                     <Icon className="h-5 w-5" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="text-xs uppercase tracking-[0.14em] text-subtle">{label}</p>
-                    <p className="truncate font-medium text-white">{value}</p>
+                    {/* Full value always visible: wraps on narrow phones instead of being cut off */}
+                    <p className="font-medium text-white [overflow-wrap:anywhere]">{value}</p>
+                    {action && <div className="mt-1 sm:hidden">{action}</div>}
                   </div>
-                  {action}
+                  {action && <div className="hidden flex-shrink-0 sm:block">{action}</div>}
                 </div>
               </Reveal>
             ))}
@@ -161,8 +164,10 @@ export default function ContactPage() {
           <Reveal variant="right" delay={150}>
             <div className="glass relative overflow-hidden rounded-[2rem] p-6 sm:p-10">
               <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-a1/25 blur-[80px]" />
-              <h2 className="relative text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Send me a <span className="font-serif font-normal italic text-gradient">message</span>
+              <h2 aria-label="Send me a message" className="relative text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                <ScrambleText
+                  segments={[{ text: "Send me a" }, { text: "message", className: "font-serif font-normal italic text-gradient" }]}
+                />
               </h2>
 
               <div aria-live="polite">

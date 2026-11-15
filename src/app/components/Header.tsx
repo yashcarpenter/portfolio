@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { navItems } from "../lib/site";
 import { cn } from "../lib/utils";
 import { ArrowUpRight } from "./ui/Icons";
+import MobileMenu from "./MobileMenu";
+import { setScrollLocked } from "./motion/SmoothScroll";
 
 export default function Header() {
   const pathname = usePathname();
@@ -31,10 +33,14 @@ export default function Header() {
   // Close the mobile menu on navigation and lock scroll while open.
   useEffect(() => setIsMenuOpen(false), [pathname]);
   useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    if (!isMenuOpen) return;
+    setScrollLocked(true);
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setIsMenuOpen(false);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      setScrollLocked(false);
+      window.removeEventListener("keydown", onKey);
+    };
   }, [isMenuOpen]);
 
   const isActive = (href: string) => pathname === href || pathname?.startsWith(`${href}/`);
@@ -126,35 +132,7 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile full-screen menu */}
-      <div
-        id="mobile-menu"
-        className={cn(
-          "fixed inset-0 z-40 flex flex-col justify-center bg-[#06060a]/95 px-8 backdrop-blur-2xl transition-[clip-path] duration-700 ease-[var(--ease)] md:hidden",
-          isMenuOpen ? "[clip-path:circle(150%_at_calc(100%-2.5rem)_2.5rem)]" : "pointer-events-none [clip-path:circle(0%_at_calc(100%-2.5rem)_2.5rem)]"
-        )}
-        aria-hidden={!isMenuOpen}
-        inert={!isMenuOpen}
-      >
-        <nav aria-label="Mobile" className="flex flex-col gap-2">
-          {[{ name: "Home", href: "/" }, ...navItems].map((item, i) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setIsMenuOpen(false)}
-              className={cn(
-                "flex items-baseline gap-4 py-2 text-5xl font-semibold tracking-tight transition-all duration-700 ease-[var(--ease)]",
-                isMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
-                item.href === pathname ? "text-white" : "text-white/50"
-              )}
-              style={{ transitionDelay: isMenuOpen ? `${150 + i * 60}ms` : "0ms" }}
-            >
-              <span className="font-mono text-sm text-a2">0{i + 1}</span>
-              {item.name}
-            </Link>
-          ))}
-        </nav>
-      </div>
+      <MobileMenu open={isMenuOpen} pathname={pathname} onClose={() => setIsMenuOpen(false)} />
     </>
   );
 }

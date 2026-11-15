@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Reveal from "../motion/Reveal";
-import SplitText from "../motion/SplitText";
+import ScrambleText from "../motion/ScrambleText";
 
 interface PageHeroProps {
   eyebrow: string;
@@ -10,10 +10,10 @@ interface PageHeroProps {
   children?: ReactNode;
 }
 
-/** Shared hero for inner pages: eyebrow, split-text headline with accent line, intro copy. */
+/** Shared hero for inner pages: eyebrow, scramble-decoding headline with gradient accent line, intro copy. */
 export default function PageHero({ eyebrow, title, accent, description, children }: PageHeroProps) {
   return (
-    <section className="relative pb-16 pt-40 sm:pb-24 sm:pt-48">
+    <section className="relative pb-16 pt-36 sm:pb-24 sm:pt-48">
       <div className="container-x">
         <Reveal>
           <span className="eyebrow">
@@ -21,13 +21,17 @@ export default function PageHero({ eyebrow, title, accent, description, children
             {eyebrow}
           </span>
         </Reveal>
-        <SplitText
-          as="h1"
-          delay={100}
-          breakAfter={[0]}
-          className="mt-7 max-w-5xl text-[clamp(2.75rem,7vw,5.75rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-white"
-          text={[{ text: title }, { text: accent, className: "font-serif italic font-normal text-gradient pr-2" }]}
-        />
+        <h1
+          aria-label={`${title} ${accent}`}
+          className="mt-7 max-w-5xl text-[clamp(2.4rem,7vw,5.75rem)] font-semibold leading-[0.98] tracking-[-0.04em] text-white"
+        >
+          <ScrambleText className="block" delay={100} segments={[{ text: title }]} />
+          <ScrambleText
+            className="block"
+            delay={350}
+            segments={[{ text: accent, className: "font-serif italic font-normal text-gradient pr-2" }]}
+          />
+        </h1>
         <Reveal delay={400}>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">{description}</p>
         </Reveal>

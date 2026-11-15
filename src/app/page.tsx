@@ -2,6 +2,7 @@ import Link from "next/link";
 import Hero from "./components/Hero";
 import Reveal from "./components/motion/Reveal";
 import Marquee from "./components/ui/Marquee";
+import ScrambleText from "./components/motion/ScrambleText";
 import SectionHeading from "./components/ui/SectionHeading";
 import { ArrowRight, ArrowUpRight, Bolt, Code, Layers } from "./components/ui/Icons";
 
@@ -115,8 +116,16 @@ export default function Home() {
                 <div aria-hidden="true" className="pointer-events-none absolute -top-32 left-1/2 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-a1/30 blur-[100px]" />
                 <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-60" />
                 <div className="relative">
-                  <h2 className="mx-auto max-w-3xl text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
-                    Ready to build something <span className="font-serif font-normal italic text-gradient">amazing?</span>
+                  <h2
+                    aria-label="Ready to build something amazing?"
+                    className="mx-auto max-w-3xl text-[2.1rem] font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl"
+                  >
+                    <ScrambleText
+                      segments={[
+                        { text: "Ready to build something" },
+                        { text: "amazing?", className: "font-serif font-normal italic text-gradient" },
+                      ]}
+                    />
                   </h2>
                   <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted">
                     Let&apos;s discuss your project and explore how we can work together to bring your ideas to life.

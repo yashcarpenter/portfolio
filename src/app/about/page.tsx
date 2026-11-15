@@ -2,7 +2,9 @@ import Link from "next/link";
 import PageHero from "../components/ui/PageHero";
 import SectionHeading from "../components/ui/SectionHeading";
 import Reveal from "../components/motion/Reveal";
-import Counter from "../components/ui/Counter";
+import SlotCounter from "../components/ui/SlotCounter";
+import LineReveal from "../components/motion/LineReveal";
+import ScrambleText from "../components/motion/ScrambleText";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -20,6 +22,12 @@ const stats = [
   { value: 500, suffix: "+", label: "DSA problems solved" },
   { value: 5, suffix: "+", label: "Projects built" },
   { value: 1700, suffix: "+", label: "CP rating" },
+];
+
+const story = [
+  "I'm Yash Carpenter, a passionate backend developer with 1+ years of experience crafting enterprise-grade, scalable systems that power millions of transactions. I graduated with distinction in 2024 from Shri G.S. Institute of Technology and Science, Indore, with a Bachelor of Technology in Information Technology.",
+  "My professional journey began with a transformative internship at Groww, India's leading investment platform, where I contributed to backend systems handling millions of users. This experience led to my current role as a Software Development Engineer at Volt Money, where I architect and develop robust financial technology solutions that process high-volume transactions with 99.9% uptime.",
+  "When I'm not coding, you'll find me watching movies, hanging out or playing games.",
 ];
 
 const values = [
@@ -88,33 +96,16 @@ export default function AboutPage() {
               <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">My story</h2>
             </Reveal>
             <div className="mt-6 space-y-5 text-lg leading-relaxed text-muted">
-              <Reveal delay={100}>
-                <p>
-                  I&apos;m Yash Carpenter, a passionate backend developer with 1+ years of experience crafting
-                  enterprise-grade, scalable systems that power millions of transactions. I graduated with distinction
-                  in 2024 from Shri G.S. Institute of Technology and Science, Indore, with a Bachelor of Technology in
-                  Information Technology.
-                </p>
-              </Reveal>
-              <Reveal delay={200}>
-                <p>
-                  My professional journey began with a transformative internship at <span className="text-white">Groww</span>,
-                  India&apos;s leading investment platform, where I contributed to backend systems handling millions of
-                  users. This experience led to my current role as a Software Development Engineer at{" "}
-                  <span className="text-white">Volt Money</span>, where I architect and develop robust financial technology
-                  solutions that process high-volume transactions with 99.9% uptime.
-                </p>
-              </Reveal>
-              <Reveal delay={300}>
-                <p>When I&apos;m not coding, you&apos;ll find me watching movies, hanging out or playing games.</p>
-              </Reveal>
+              {story.map((text, i) => (
+                <LineReveal key={i} text={text} highlight={["Groww", "Volt", "Money"]} delay={i * 80} />
+              ))}
             </div>
 
             <div className="mt-12 grid grid-cols-2 gap-4">
               {stats.map((s, i) => (
                 <Reveal key={s.label} delay={i * 90}>
                   <div className="spotlight p-6">
-                    <Counter value={s.value} suffix={s.suffix} className="block text-4xl font-semibold tracking-tight text-white" />
+                    <SlotCounter value={s.value} suffix={s.suffix} className="text-4xl font-semibold tracking-tight text-white" />
                     <p className="mt-1 text-sm text-muted">{s.label}</p>
                   </div>
                 </Reveal>
@@ -202,8 +193,13 @@ export default function AboutPage() {
         <div className="container-x">
           <Reveal className="spotlight flex flex-col items-start justify-between gap-8 p-10 sm:p-14 md:flex-row md:items-center">
             <div>
-              <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                Ready to work <span className="font-serif font-normal italic text-gradient">together?</span>
+              <h2 aria-label="Ready to work together?" className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                <ScrambleText
+                  segments={[
+                    { text: "Ready to work" },
+                    { text: "together?", className: "font-serif font-normal italic text-gradient" },
+                  ]}
+                />
               </h2>
               <p className="mt-3 max-w-xl text-muted">
                 I&apos;m always excited to take on new challenges and collaborate on interesting projects. Let&apos;s discuss how

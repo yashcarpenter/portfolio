@@ -46,8 +46,9 @@
     background: var(--bg);
   }
 
+  /* Background colour lives on <html> only: a body background would paint over the
+     fixed, negative-z decorative backdrop (glows + node field) and hide it. */
   body {
-    background: var(--bg);
     color: var(--fg);
     font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     line-height: 1.6;
@@ -58,6 +59,12 @@
   ::selection {
     background: rgba(124, 92, 255, 0.45);
     color: #fff;
+  }
+
+  /* Grid items default to min-width:auto, so wide content (code card, long email)
+     stretches a single-column mobile grid past the screen. Let them shrink. */
+  :where(.grid) > * {
+    min-width: 0;
   }
 
   :focus-visible {
@@ -183,13 +190,9 @@
     will-change: transform;
   }
 
-  /* Magnetic elements (vars set from MotionEffects) */
+  /* Magnetic elements (spring-driven vars set from MotionEffects) */
   [data-magnetic] {
     transform: translate3d(var(--tx, 0px), var(--ty, 0px), 0);
-    transition: transform 0.6s var(--ease);
-  }
-  [data-magnetic].is-magnetic {
-    transition: transform 0.15s linear;
   }
 
   /* Buttons */
@@ -434,6 +437,46 @@
   transform: none;
 }
 
+/* Route transition (components/motion/Curtain.tsx): the page softly fades out
+   before navigating; the new page fades in via .page-enter. */
+html[data-nav="leaving"] #main,
+html[data-nav="leaving"] body > footer,
+html[data-nav="leaving"] #main ~ footer {
+  opacity: 0;
+  transform: translateY(-6px);
+  filter: blur(4px);
+  transition: opacity 0.22s ease, transform 0.22s ease, filter 0.22s ease;
+}
+
+/* Smooth scroll (Lenis, desktop only) drives scrolling itself */
+html.lenis {
+  scroll-behavior: auto;
+}
+
+/* Custom cursor (desktop only) replaces the native one */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+/* Line-by-line paragraph reveal (<LineReveal />) */
+.line-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.line-word > span {
+  display: inline-block;
+  transform: translate3d(0, 105%, 0);
+  transition: transform 0.9s var(--ease);
+  transition-delay: calc(var(--line, 0) * 110ms + var(--d, 0ms));
+}
+.line-reveal.is-in .line-word > span {
+  transform: none;
+}
+
 /* One-shot entrance (for remounting content like tab panels) */
 .pop-in {
   animation: pop-in 0.7s var(--ease) both;
@@ -442,7 +485,9 @@
 
 /* Page transition (app/template.tsx) */
 .page-enter {
-  animation: page-enter 0.8s var(--ease) both;
+  /* `backwards`, not `both`: a fill that persists after the animation keeps the
+     wrapper as a containing block and breaks position: fixed descendants. */
+  animation: page-enter 0.8s var(--ease) backwards;
 }
 
 .animate-float {
@@ -573,6 +618,14 @@
     transform: translateY(200%);
   }
 }
+@keyframes code-packet {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
 @keyframes caret {
   50% {
     opacity: 0;
@@ -602,7 +655,8 @@
     transition-delay: 0ms !important;
   }
   .reveal,
-  .split-word > span {
+  .split-word > span,
+  .line-word > span {
     opacity: 1;
     transform: none;
     filter: none;
