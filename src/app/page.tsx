@@ -1,98 +1,141 @@
-"use client";
-
-import Header from "./components/Header";
+import Link from "next/link";
 import Hero from "./components/Hero";
-import Footer from "./components/Footer";
+import Reveal from "./components/motion/Reveal";
+import Marquee from "./components/ui/Marquee";
+import SectionHeading from "./components/ui/SectionHeading";
+import { ArrowRight, ArrowUpRight, Bolt, Code, Layers } from "./components/ui/Icons";
+
+const stack = ["Java", "Spring Boot", "PostgreSQL", "MySQL", "Redis", "Kafka", "AWS", "Docker", "Kubernetes", "Hibernate", "Jenkins", "Argo CD", "ReactJS", "DynamoDB"];
+
+const services = [
+  {
+    Icon: Code,
+    title: "Backend Development",
+    body: "Building scalable microservices, APIs, and database architectures using Java, Spring Boot, and modern cloud technologies.",
+    tags: ["Java", "Spring Boot", "REST"],
+    className: "lg:col-span-2",
+  },
+  {
+    Icon: Bolt,
+    title: "Performance Optimization",
+    body: "Optimizing system performance, reducing response times, and ensuring high availability for mission-critical applications.",
+    tags: ["Redis", "Indexing"],
+    className: "",
+  },
+  {
+    Icon: Layers,
+    title: "System Architecture",
+    body: "Designing and implementing robust system architectures that can handle scale and growth while maintaining reliability.",
+    tags: ["Kafka", "AWS", "Microservices"],
+    className: "",
+  },
+];
+
+const highlights = [
+  { metric: "40%", label: "faster queries", detail: "MySQL schema with indexing & partitioning at Groww" },
+  { metric: "35%", label: "faster deploys", detail: "Services integrated with Argo CD" },
+  { metric: "30%", label: "faster resolution", detail: "Dependency failures, via a centralized repository" },
+];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <main>
-        <Hero />
-        
-        {/* Quick Overview Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 mt-16">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                What I Do
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                I specialize in building robust, scalable backend systems that power exceptional digital experiences.
-              </p>
-            </div>
+    <>
+      <Hero />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="text-center p-8 bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Backend Development</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Building scalable microservices, APIs, and database architectures using Java, Spring Boot, and modern cloud technologies.
-                </p>
-              </div>
+      {/* Tech marquee */}
+      <section aria-label="Technologies" className="border-y border-white/[0.06] bg-white/[0.015] py-6">
+        <Marquee duration={45}>
+          {stack.map((t) => (
+            <span key={t} className="flex items-center gap-4 whitespace-nowrap text-lg font-medium text-white/40">
+              <span className="h-1.5 w-1.5 rounded-full bg-gradient-to-r from-a1 to-a2" />
+              {t}
+            </span>
+          ))}
+        </Marquee>
+      </section>
 
-              <div className="text-center p-8 bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Performance Optimization</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Optimizing system performance, reducing response times, and ensuring high availability for mission-critical applications.
-                </p>
-              </div>
+      {/* What I do (bento) */}
+      <section className="py-28 sm:py-36">
+        <div className="container-x">
+          <SectionHeading
+            eyebrow="What I do"
+            title="Engineering backends that"
+            accent="scale."
+            description="I specialize in building robust, scalable backend systems that power exceptional digital experiences."
+          />
 
-              <div className="text-center p-8 bg-white rounded-lg shadow-sm border border-gray-200">
-                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+          <div className="grid gap-5 lg:grid-cols-3">
+            {services.map(({ Icon, title, body, tags, className }, i) => (
+              <Reveal key={title} delay={i * 120} className={className}>
+                <article className="spotlight group h-full p-8 sm:p-10">
+                  <div className="flex items-start justify-between">
+                    <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br from-a1/25 to-a2/10 text-white transition-transform duration-700 ease-[var(--ease)] group-hover:-rotate-6 group-hover:scale-110">
+                      <Icon className="h-6 w-6" />
+                    </span>
+                    <span className="font-mono text-xs text-subtle">0{i + 1}</span>
+                  </div>
+                  <h3 className="mt-10 text-2xl font-semibold tracking-tight text-white">{title}</h3>
+                  <p className="mt-3 max-w-lg leading-relaxed text-muted">{body}</p>
+                  <div className="mt-8 flex flex-wrap gap-2">
+                    {tags.map((t) => (
+                      <span key={t} className="chip">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+
+            {/* Highlights tile */}
+            <Reveal delay={360} className="lg:col-span-2">
+              <article className="spotlight h-full p-8 sm:p-10">
+                <p className="text-sm uppercase tracking-[0.16em] text-subtle">Impact so far</p>
+                <div className="mt-8 grid gap-8 sm:grid-cols-3">
+                  {highlights.map((h) => (
+                    <div key={h.label}>
+                      <p className="text-5xl font-semibold tracking-tight text-gradient">{h.metric}</p>
+                      <p className="mt-2 font-medium text-white">{h.label}</p>
+                      <p className="mt-1 text-sm leading-relaxed text-muted">{h.detail}</p>
+                    </div>
+                  ))}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">System Architecture</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Designing and implementing robust system architectures that can handle scale and growth while maintaining reliability.
-                </p>
-              </div>
-            </div>
+              </article>
+            </Reveal>
           </div>
-        </section>
+        </div>
+      </section>
 
-
-        {/* Call to Action */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 mt-16">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Ready to Build Something Amazing?
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                  Let&apos;s discuss your project and explore how we can work together to bring your ideas to life.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/work"
-                className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors duration-200"
-              >
-                View My Work
-              </a>
-              <a
-                href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-md border-2 border-blue-600 hover:bg-blue-50 transition-colors duration-200"
-              >
-                Get In Touch
-              </a>
+      {/* CTA */}
+      <section className="pb-10">
+        <div className="container-x">
+          <Reveal variant="scale">
+            <div className="ring-conic rounded-[2rem] p-px">
+              <div className="relative overflow-hidden rounded-[calc(2rem-1px)] bg-[#0a0a11] px-6 py-20 text-center sm:px-16 sm:py-28">
+                <div aria-hidden="true" className="pointer-events-none absolute -top-32 left-1/2 h-72 w-[40rem] -translate-x-1/2 rounded-full bg-a1/30 blur-[100px]" />
+                <div aria-hidden="true" className="bg-grid pointer-events-none absolute inset-0 opacity-60" />
+                <div className="relative">
+                  <h2 className="mx-auto max-w-3xl text-4xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl">
+                    Ready to build something <span className="font-serif font-normal italic text-gradient">amazing?</span>
+                  </h2>
+                  <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted">
+                    Let&apos;s discuss your project and explore how we can work together to bring your ideas to life.
+                  </p>
+                  <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
+                    <Link href="/contact" data-magnetic="0.2" className="btn btn-primary">
+                      <span className="relative">Get in touch</span>
+                      <ArrowUpRight className="btn-arrow relative h-4 w-4" />
+                    </Link>
+                    <Link href="/work" data-magnetic="0.2" className="btn btn-ghost">
+                      View my work <ArrowRight className="btn-arrow h-4 w-4" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </section>
-      </main>
-      <div className="mt-16">
-        <Footer />
-      </div>
-    </div>
+          </Reveal>
+        </div>
+      </section>
+    </>
   );
 }

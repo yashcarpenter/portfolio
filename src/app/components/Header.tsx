@@ -1,125 +1,160 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { navItems } from "../lib/site";
+import { cn } from "../lib/utils";
+import { ArrowUpRight } from "./ui/Icons";
 
 export default function Header() {
+  const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
 
-  const navItems = [
-    { name: "About", href: "/about" },
-    { name: "Work", href: "/work" },
-    { name: "Skills", href: "/skills" },
-    { name: "Contact", href: "/contact" },
-  ];
-
-  // Handle scroll effect
+  // Shrink on scroll; hide when scrolling down, reveal when scrolling up.
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setIsScrolled(y > 24);
+      setHidden(y > 300 && y > last + 4);
+      if (y < last - 4) setHidden(false);
+      last = y;
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  return (
-    <header 
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-        isScrolled 
-          ? "bg-white/95 backdrop-blur-md shadow-xl border-b border-gray-200/50 transform -translate-y-0" 
-          : "bg-white/80 backdrop-blur-sm border-b border-gray-200/30 transform -translate-y-0"
-      }`}
-      style={{
-        backdropFilter: isScrolled ? 'blur(12px)' : 'blur(8px)',
-        WebkitBackdropFilter: isScrolled ? 'blur(12px)' : 'blur(8px)',
-      }}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-              <div className="flex-shrink-0">
-                <Link
-                  href="/"
-                  className="group text-2xl font-bold text-gray-900 hover:text-blue-600 transition-all duration-500 transform hover:scale-105 relative overflow-hidden"
-                >
-                  <span className="relative z-10">
-                    Yash Carpenter
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-500 group-hover:w-full"></span>
-                  </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform scale-x-0 group-hover:scale-x-100 origin-left"></div>
-                </Link>
-              </div>
+  // Close the mobile menu on navigation and lock scroll while open.
+  useEffect(() => setIsMenuOpen(false), [pathname]);
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setIsMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isMenuOpen]);
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-1">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="group relative px-4 py-2 text-gray-700 hover:text-blue-600 font-medium transition-all duration-500 rounded-lg hover:bg-blue-50/50 overflow-hidden"
-              >
-                <span className="relative z-10 group-hover:translate-x-1 transition-transform duration-300">{item.name}</span>
-                <span className="absolute inset-0 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg scale-0 group-hover:scale-100 transition-transform duration-500 ease-out"></span>
-                <span className="absolute -bottom-1 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-purple-600 transition-all duration-500 group-hover:left-0 group-hover:w-full"></span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </a>
-            ))}
+  const isActive = (href: string) => pathname === href || pathname?.startsWith(`${href}/`);
+
+  return (
+    <>
+      <header
+        className={cn(
+          "fixed inset-x-0 top-0 z-50 flex justify-center px-4 transition-all duration-700 ease-[var(--ease)]",
+          isScrolled ? "pt-3" : "pt-5",
+          hidden && !isMenuOpen ? "-translate-y-28" : "translate-y-0"
+        )}
+      >
+        <div
+          className={cn(
+            "flex w-full items-center justify-between rounded-full border pl-5 pr-2 transition-all duration-700 ease-[var(--ease)]",
+            isScrolled
+              ? "h-14 max-w-4xl border-white/10 bg-[#0b0b12]/70 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)] backdrop-blur-xl"
+              : "h-16 max-w-6xl border-transparent bg-transparent"
+          )}
+        >
+          {/* Logo */}
+          <Link href="/" className="group flex items-center gap-2.5" aria-label="Yash Carpenter, home">
+            <span className="ring-conic relative flex h-9 w-9 items-center justify-center rounded-full">
+              <span className="flex h-full w-full items-center justify-center rounded-full bg-[#0b0b12] text-xs font-bold tracking-wider text-white">
+                YC
+              </span>
+            </span>
+            <span className="hidden font-semibold tracking-tight text-white sm:block">
+              Yash Carpenter<span className="text-a2 transition-colors duration-500 group-hover:text-a3">.</span>
+            </span>
+          </Link>
+
+          {/* Desktop nav */}
+          <nav aria-label="Primary" className="hidden items-center gap-1 md:flex">
+            {navItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "group relative rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
+                    active ? "text-white" : "text-muted hover:text-white"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "absolute inset-0 rounded-full bg-white/[0.08] transition-all duration-500 ease-[var(--ease)]",
+                      active ? "scale-100 opacity-100" : "scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-60"
+                    )}
+                  />
+                  <span className="relative">{item.name}</span>
+                </Link>
+              );
+            })}
           </nav>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="flex items-center gap-2">
+            <Link href="/contact" data-magnetic="0.25" className="btn btn-primary hidden !h-10 !px-5 !text-sm md:inline-flex">
+              <span className="relative">Let&apos;s talk</span>
+              <ArrowUpRight className="btn-arrow relative h-4 w-4" />
+            </Link>
+
+            {/* Mobile toggle */}
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="group relative p-2 text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-lg transition-all duration-500 hover:bg-gray-100 hover:scale-110"
-              aria-label="Toggle menu"
+              type="button"
+              onClick={() => setIsMenuOpen((o) => !o)}
+              className="relative flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 md:hidden"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
             >
-              <div className="w-6 h-6 relative">
-                <span 
-                  className={`absolute top-1 left-0 w-6 h-0.5 bg-current transition-all duration-500 ease-out ${
-                    isMenuOpen ? "rotate-45 translate-y-2" : "translate-y-0"
-                  }`}
-                ></span>
-                <span 
-                  className={`absolute top-3 left-0 w-6 h-0.5 bg-current transition-all duration-500 ease-out ${
-                    isMenuOpen ? "opacity-0 scale-x-0" : "opacity-100 scale-x-100"
-                  }`}
-                ></span>
-                <span 
-                  className={`absolute top-5 left-0 w-6 h-0.5 bg-current transition-all duration-500 ease-out ${
-                    isMenuOpen ? "-rotate-45 -translate-y-2" : "translate-y-0"
-                  }`}
-                ></span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <span
+                className={cn(
+                  "absolute h-[1.5px] w-5 bg-white transition-transform duration-500 ease-[var(--ease)]",
+                  isMenuOpen ? "rotate-45" : "-translate-y-1"
+                )}
+              />
+              <span
+                className={cn(
+                  "absolute h-[1.5px] w-5 bg-white transition-transform duration-500 ease-[var(--ease)]",
+                  isMenuOpen ? "-rotate-45" : "translate-y-1"
+                )}
+              />
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Navigation */}
-        <div 
-          className={`md:hidden overflow-hidden transition-all duration-500 ease-out ${
-            isMenuOpen ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-white/95 backdrop-blur-sm border-t border-gray-200/50 rounded-b-lg shadow-xl">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="group block px-4 py-3 text-gray-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 rounded-lg font-medium transition-all duration-500 transform hover:translate-x-2 hover:scale-105 relative overflow-hidden"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <span className="flex items-center relative z-10">
-                  <span className="w-2 h-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-125"></span>
-                  <span className="group-hover:translate-x-1 transition-transform duration-300">{item.name}</span>
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-purple-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-x-0 group-hover:scale-x-100 origin-left"></div>
-              </a>
-            ))}
-          </div>
-        </div>
+      {/* Mobile full-screen menu */}
+      <div
+        id="mobile-menu"
+        className={cn(
+          "fixed inset-0 z-40 flex flex-col justify-center bg-[#06060a]/95 px-8 backdrop-blur-2xl transition-[clip-path] duration-700 ease-[var(--ease)] md:hidden",
+          isMenuOpen ? "[clip-path:circle(150%_at_calc(100%-2.5rem)_2.5rem)]" : "pointer-events-none [clip-path:circle(0%_at_calc(100%-2.5rem)_2.5rem)]"
+        )}
+        aria-hidden={!isMenuOpen}
+        inert={!isMenuOpen}
+      >
+        <nav aria-label="Mobile" className="flex flex-col gap-2">
+          {[{ name: "Home", href: "/" }, ...navItems].map((item, i) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setIsMenuOpen(false)}
+              className={cn(
+                "flex items-baseline gap-4 py-2 text-5xl font-semibold tracking-tight transition-all duration-700 ease-[var(--ease)]",
+                isMenuOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0",
+                item.href === pathname ? "text-white" : "text-white/50"
+              )}
+              style={{ transitionDelay: isMenuOpen ? `${150 + i * 60}ms` : "0ms" }}
+            >
+              <span className="font-mono text-sm text-a2">0{i + 1}</span>
+              {item.name}
+            </Link>
+          ))}
+        </nav>
       </div>
-    </header>
+    </>
   );
 }

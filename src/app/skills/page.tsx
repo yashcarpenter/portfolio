@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import PageHero from "../components/ui/PageHero";
+import SectionHeading from "../components/ui/SectionHeading";
+import Reveal from "../components/motion/Reveal";
+import Marquee from "../components/ui/Marquee";
+import { cn, delay } from "../lib/utils";
 
 export default function SkillsPage() {
   const [activeCategory, setActiveCategory] = useState("TechStack");
-  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
-  const { ref: skillsRef, isVisible: skillsVisible } = useScrollAnimation();
 
   const skillCategories = [
     {
@@ -133,113 +133,115 @@ export default function SkillsPage() {
 
 
   const currentCategory = skillCategories.find(cat => cat.id === activeCategory) || skillCategories[0];
+  // Unique skill names across all categories, for the marquee rows.
+  const allSkills = Array.from(new Map(skillCategories.flatMap((c) => c.skills).map((s) => [s.name, s])).values());
+  const half = Math.ceil(allSkills.length / 2);
+  const rows = [allSkills.slice(0, half), allSkills.slice(half)];
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <main>
-        {/* Hero Section */}
-            <section 
-              ref={heroRef}
-              className={`pt-20 pb-4 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100 transition-all duration-1000 ${
-                heroVisible 
-                  ? 'opacity-100 translate-y-0' 
-                  : 'opacity-0 translate-y-8'
-              }`}
-              style={{ paddingTop: '80px' }}
-            >
-          <div className="max-w-7xl mx-auto text-center">
-            <div className="inline-flex items-center px-6 py-3 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-8 shadow-sm">
-              Technical Skills & Expertise
-            </div>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-8 leading-tight">
-              Skills That
-              <span className="block text-blue-600 mt-2">Drive Innovation</span>
-            </h1>
-            <p className="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-12">
-              A comprehensive showcase of my backend development expertise across Java, Spring Boot, 
-              databases, cloud technologies, and modern development tools that power scalable applications.
-            </p>
-          </div>
-        </section>
+    <>
+      <PageHero
+        eyebrow="Technical skills & expertise"
+        title="Skills that"
+        accent="drive innovation"
+        description="A comprehensive showcase of my backend development expertise across Java, Spring Boot, databases, cloud technologies, and modern development tools that power scalable applications."
+      />
 
-        {/* Skills Categories Section */}
-        <section 
-          ref={skillsRef}
-          className={`py-8 px-4 sm:px-6 lg:px-8 bg-white mt-16 transition-all duration-1000 ${
-            skillsVisible 
-              ? 'opacity-100 translate-y-0' 
-              : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-                Technical Skills
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Click on different categories to explore my expertise across various domains
-              </p>
-            </div>
+      {/* Marquee rows */}
+      <section aria-label="All skills" className="space-y-4 pb-24">
+        {rows.map((row, r) => (
+          <Marquee key={r} reverse={r === 1} duration={50 + r * 10}>
+            {row.map((s) => (
+              <span
+                key={s.name}
+                className="glass flex items-center gap-3 whitespace-nowrap rounded-2xl px-5 py-3 text-base font-medium text-white/80"
+              >
+                <span aria-hidden="true">{s.icon}</span>
+                {s.name}
+              </span>
+            ))}
+          </Marquee>
+        ))}
+      </section>
 
-            {/* Category Tabs */}
-            <div className="flex flex-wrap justify-center gap-4 mb-16">
-              {skillCategories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setActiveCategory(category.id)}
-                  className={`px-6 py-3 rounded-md font-semibold transition-colors duration-200 ${
-                    activeCategory === category.id
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  }`}
-                >
-                  <span className="mr-2">{category.icon}</span>
-                  {category.title}
-                </button>
-              ))}
-            </div>
+      {/* Categories */}
+      <section className="py-24 sm:py-32">
+        <div className="container-x">
+          <SectionHeading
+            eyebrow="Explore"
+            title="Technical"
+            accent="skills."
+            description="Click on different categories to explore my expertise across various domains."
+          />
 
-            {/* Active Category Content */}
-            <div className="bg-gray-50 rounded-lg p-8 shadow-sm border border-gray-200">
-              <div className="text-center mb-12">
-                <div className="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center text-2xl text-blue-600">
-                  {currentCategory.icon}
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{currentCategory.title}</h3>
-                <p className="text-gray-600 max-w-2xl mx-auto">{currentCategory.description}</p>
-              </div>
-
-              {/* Skills Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {currentCategory.skills.map((skill, index) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-lg p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300"
+          <Reveal className="mb-12">
+            <div role="tablist" aria-label="Skill categories" className="flex flex-wrap justify-center gap-2">
+              {skillCategories.map((category) => {
+                const active = activeCategory === category.id;
+                return (
+                  <button
+                    key={category.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    aria-controls="skills-panel"
+                    onClick={() => setActiveCategory(category.id)}
+                    className={cn(
+                      "group relative flex items-center gap-2 overflow-hidden rounded-full border px-5 py-2.5 text-sm font-semibold transition-all duration-500 ease-[var(--ease)]",
+                      active
+                        ? "border-transparent bg-white text-black shadow-[0_10px_40px_-10px_rgba(124,92,255,0.8)]"
+                        : "border-white/10 bg-white/[0.03] text-muted hover:border-white/25 hover:text-white"
+                    )}
                   >
-                    <div className="flex items-center mb-4">
-                      <div 
-                        className="w-10 h-10 flex items-center justify-center text-lg mr-3 ml-2"
-                        style={{ marginLeft: '8px', marginRight: '12px' }}
+                    <span aria-hidden="true" className="transition-transform duration-500 group-hover:scale-125">
+                      {category.icon}
+                    </span>
+                    {category.title}
+                  </button>
+                );
+              })}
+            </div>
+          </Reveal>
+
+          {/* Active panel; keyed so it replays the entrance on change */}
+          <div key={currentCategory.id} id="skills-panel" role="tabpanel" className="glass rounded-[2rem] p-6 sm:p-10">
+            <div className="pop-in mb-10 flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left">
+              <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-a1/30 to-a2/20 text-3xl" aria-hidden="true">
+                {currentCategory.icon}
+              </span>
+              <div>
+                <h3 className="text-2xl font-semibold tracking-tight text-white">{currentCategory.title}</h3>
+                <p className="mt-1 text-muted">{currentCategory.description}</p>
+              </div>
+              <span className="font-mono text-sm text-subtle sm:ml-auto">
+                {String(currentCategory.skills.length).padStart(2, "0")} skills
+              </span>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {currentCategory.skills.map((skill, index) => (
+                <div key={skill.name} className="pop-in" style={delay(80 + index * 55)}>
+                  <div data-tilt="8" className="spotlight group h-full p-6">
+                    <div className="flex items-center gap-4">
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          "flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br text-xl font-bold text-white shadow-lg transition-transform duration-700 ease-[var(--ease)] group-hover:-rotate-6 group-hover:scale-110",
+                          skill.color
+                        )}
                       >
                         {skill.icon}
-                      </div>
-                      <h4 className="text-lg font-bold text-gray-900">{skill.name}</h4>
+                      </span>
+                      <h4 className="text-lg font-semibold text-white">{skill.name}</h4>
                     </div>
-                    
-                    <p className="text-gray-600 text-sm leading-relaxed">{skill.description}</p>
+                    <p className="mt-4 text-sm leading-relaxed text-muted">{skill.description}</p>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
-        </section>
-
-
-      </main>
-      <div className="mt-16">
-        <Footer />
-      </div>
-    </div>
+        </div>
+      </section>
+    </>
   );
 }

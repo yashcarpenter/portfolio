@@ -1,196 +1,159 @@
 "use client";
 
-import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import Link from "next/link";
+import Reveal from "./motion/Reveal";
+import SplitText from "./motion/SplitText";
+import Typewriter from "./ui/Typewriter";
+import Counter from "./ui/Counter";
+import SocialLinks from "./ui/SocialLinks";
+import { ArrowRight } from "./ui/Icons";
+
+const roles = ["scalable microservices.", "high-throughput APIs.", "resilient fintech systems.", "event-driven pipelines."];
+
+const stats = [
+  { value: 1, suffix: "+", label: "Years experience" },
+  { value: 5, suffix: "+", label: "Projects built" },
+  { value: 500, suffix: "+", label: "DSA problems" },
+];
+
+/** Syntax-highlighted snippet shown in the hero terminal card. */
+const codeLines: Array<Array<[string, string]>> = [
+  [["text-a3", "@RestController"]],
+  [["text-a1", "public class "], ["text-white", "RepaymentController"], ["text-muted", " {"]],
+  [],
+  [["text-muted", "  "], ["text-a3", "@PostMapping"], ["text-muted", "("], ["text-emerald-300", "\"/repay\""], ["text-muted", ")"]],
+  [["text-a1", "  public "], ["text-a2", "Mono"], ["text-muted", "<"], ["text-a2", "Receipt"], ["text-muted", "> "], ["text-white", "repay"], ["text-muted", "(...) {"]],
+  [["text-a1", "    return "], ["text-white", "lending"], ["text-muted", "."], ["text-a2", "process"], ["text-muted", "(req)"]],
+  [["text-muted", "      ."], ["text-a2", "cache"], ["text-muted", "("], ["text-white", "redis"], ["text-muted", ")"]],
+  [["text-muted", "      ."], ["text-a2", "publish"], ["text-muted", "("], ["text-white", "kafka"], ["text-muted", ");"]],
+  [["text-muted", "  }"]],
+  [["text-muted", "}"]],
+];
 
 export default function Hero() {
-  const { ref: greetingRef, isVisible: greetingVisible } = useScrollAnimation();
-  const { ref: nameRef, isVisible: nameVisible } = useScrollAnimation();
-  const { ref: descriptionRef, isVisible: descriptionVisible } = useScrollAnimation();
-  const { ref: statsRef, isVisible: statsVisible } = useScrollAnimation();
-  const { ref: ctaRef, isVisible: ctaVisible } = useScrollAnimation();
-  const { ref: socialRef, isVisible: socialVisible } = useScrollAnimation();
-
   return (
-    <section 
-      className="relative min-h-screen flex items-center justify-center bg-white pt-20 overflow-hidden"
-      style={{ paddingTop: '80px' }}
-    >
-      {/* Background Animation Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-1/4 left-1/3 w-80 h-80 bg-pink-100 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse" style={{ animationDelay: '4s' }}></div>
-      </div>
-      
-      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center">
-          {/* Greeting Section */}
-          <div 
-            ref={greetingRef}
-            className={`mb-8 transition-all duration-1000 ${
-              greetingVisible 
-                ? 'opacity-100 translate-y-0' 
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-gradient-to-r from-blue-50 to-purple-50 text-gray-700 text-sm font-medium mb-0 border border-blue-200 shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105">
-              <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
-              Available for new opportunities
-            </div>
-          </div>
-          
-          {/* Name and Title Section */}
-          <div 
-            ref={nameRef}
-            className={`mb-8 transition-all duration-1000 ${
-              nameVisible 
-                ? 'opacity-100 translate-y-0' 
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-4">
-              Hi, I&apos;m{" "}
-              <span className="text-blue-600 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent animate-gradient-shift">
-                Yash Carpenter
-              </span>
-            </h1>
-            
-            <h2 className="text-xl sm:text-2xl lg:text-3xl text-gray-600 font-light">
-              Backend Developer
-            </h2>
-          </div>
-
-          {/* Description Section */}
-          <div 
-            ref={descriptionRef}
-            className={`mb-12 transition-all duration-1000 ${
-              descriptionVisible 
-                ? 'opacity-100 translate-y-0' 
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <p className="text-lg sm:text-xl text-gray-600 leading-relaxed max-w-4xl mx-auto">
-              Backend Developer with hands-on experience in building scalable and high-performance systems in fast-paced startup environments. 
-              Proficient in Java, Spring Boot, MySQL, and PostgreSQL, with a strong foundation in DSA.
-            </p>
-          </div>
-
-          {/* Stats Section */}
-          <div 
-            ref={statsRef}
-            className={`mb-12 transition-all duration-1000 ${
-              statsVisible 
-                ? 'opacity-100 scale-100' 
-                : 'opacity-0 scale-95'
-            }`}
-          >
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center max-w-md mx-auto">
-              <div className="group hover:scale-110 transition-all duration-300 cursor-pointer">
-                <div className="text-4xl font-bold text-blue-600 mb-2 group-hover:text-purple-600 transition-colors duration-300">1+</div>
-                <div className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">Years Experience</div>
-              </div>
-              <div className="group hover:scale-110 transition-all duration-300 cursor-pointer">
-                <div className="text-4xl font-bold text-blue-600 mb-2 group-hover:text-purple-600 transition-colors duration-300">5+</div>
-                <div className="text-gray-600 group-hover:text-gray-800 transition-colors duration-300">Projects Built</div>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA Buttons Section */}
-          <div 
-            ref={ctaRef}
-            className={`mb-12 transition-all duration-1000 ${
-              ctaVisible 
-                ? 'opacity-100 translate-y-0' 
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
-              <a
-                href="/work"
-                className="group w-full md:w-auto inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
-              >
-                <span className="group-hover:translate-x-1 transition-transform duration-300">View My Work</span>
-                <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </a>
-              
-              <a
-                href="/skills"
-                className="group w-full md:w-auto inline-flex items-center justify-center px-8 py-3 bg-white text-blue-600 font-semibold rounded-md border-2 border-blue-600 hover:bg-blue-50 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-blue-500/25"
-              >
-                <svg className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-                <span className="group-hover:translate-x-1 transition-transform duration-300">View Skills</span>
-              </a>
-              
-              <a
-                href="/contact"
-                className="group w-full md:w-auto inline-flex items-center justify-center px-8 py-3 bg-gradient-to-r from-red-600 to-purple-600 text-white font-semibold rounded-md hover:from-purple-700 hover:to-pink-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl hover:shadow-purple-500/25"
-              >
-                <svg className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                </svg>
-                <span className="group-hover:translate-x-1 transition-transform duration-300">Let&apos;s Talk</span>
-              </a>
-            </div>
-          </div>
-
-          {/* Social Links Section */}
-          <div 
-            ref={socialRef}
-            className={`flex justify-center space-x-4 transition-all duration-1000 ${
-              socialVisible 
-                ? 'opacity-100 translate-y-0' 
-                : 'opacity-0 translate-y-8'
-            }`}
-          >
-            <a
-              href="https://www.instagram.com/yash_carpenter/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-3 rounded-md bg-gray-100 text-gray-600 hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-600 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-pink-500/25"
-              aria-label="Instagram"
-            >
-              <svg className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-              </svg>
-            </a>
-            <a
-              href="https://linkedin.com/in/yashcarpenter"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-3 rounded-md bg-gray-100 text-gray-600 hover:bg-blue-600 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/25"
-              aria-label="LinkedIn"
-            >
-              <svg className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-              </svg>
-            </a>
-            <a
-              href="https://github.com/yashcarpenter"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group p-3 rounded-md bg-gray-100 text-gray-600 hover:bg-gray-900 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-gray-500/25"
-              aria-label="GitHub"
-            >
-              <svg className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-              </svg>
-            </a>
-            <a
-              href="mailto:yashcarpenter@outlook.com"
-              className="group p-3 rounded-md bg-gray-100 text-gray-600 hover:bg-red-600 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/25"
-              aria-label="Email"
-            >
-              <svg className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </a>
-          </div>
+    <section className="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-32">
+      {/* Decorative rings */}
+      <div aria-hidden="true" className="pointer-events-none absolute right-[-20%] top-1/2 hidden -translate-y-1/2 lg:block">
+        <div className="animate-spin-slow h-[780px] w-[780px] rounded-full border border-dashed border-white/[0.06]" />
+        <div className="animate-spin-slower absolute inset-[120px] rounded-full border border-white/[0.05]">
+          <span className="absolute -top-1.5 left-1/2 h-3 w-3 rounded-full bg-a2 shadow-[0_0_20px_4px] shadow-a2/60" />
         </div>
+      </div>
+
+      <div className="container-x relative grid items-center gap-16 lg:grid-cols-[1.15fr_0.85fr]">
+        {/* Copy */}
+        <div>
+          <Reveal>
+            <span className="eyebrow">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping-soft absolute inline-flex h-full w-full rounded-full bg-emerald-400" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+              </span>
+              Available for new opportunities
+            </span>
+          </Reveal>
+
+          <SplitText
+            as="h1"
+            delay={120}
+            breakAfter={[0]}
+            className="mt-7 text-[clamp(2.8rem,7.5vw,6.2rem)] font-semibold leading-[0.95] tracking-[-0.04em] text-white"
+            text={[
+              { text: "Hi, I'm" },
+              { text: "Yash", className: "font-serif italic font-normal text-gradient pr-2" },
+              { text: "Carpenter" },
+            ]}
+          />
+
+          <Reveal delay={450}>
+            <p className="mt-7 text-xl text-muted sm:text-2xl">
+              Backend Developer building <Typewriter words={roles} className="text-white" />
+            </p>
+          </Reveal>
+
+          <Reveal delay={550}>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+              Hands-on experience building scalable, high-performance systems in fast-paced startup environments.
+              Proficient in Java, Spring Boot, MySQL and PostgreSQL, with a strong foundation in DSA.
+            </p>
+          </Reveal>
+
+          <Reveal delay={650} className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href="/work" data-magnetic="0.2" className="btn btn-primary">
+              <span className="relative">View my work</span>
+              <ArrowRight className="btn-arrow relative h-4 w-4" />
+            </Link>
+            <Link href="/skills" data-magnetic="0.2" className="btn btn-ghost">
+              Explore skills
+            </Link>
+            <SocialLinks className="mt-4 sm:ml-4 sm:mt-0" size="sm" />
+          </Reveal>
+
+          <Reveal delay={750} className="mt-14 grid max-w-lg grid-cols-3 gap-6 border-t border-white/[0.07] pt-8">
+            {stats.map((s) => (
+              <div key={s.label}>
+                <Counter value={s.value} suffix={s.suffix} className="block text-3xl font-semibold tracking-tight text-white sm:text-4xl" />
+                <p className="mt-1 text-xs uppercase tracking-[0.14em] text-subtle">{s.label}</p>
+              </div>
+            ))}
+          </Reveal>
+        </div>
+
+        {/* Terminal card */}
+        <Reveal variant="scale" delay={400} className="relative mx-auto w-full max-w-md lg:max-w-none">
+          <div className="animate-float-slow">
+            <div data-tilt="10" className="ring-conic rounded-[1.5rem] p-px shadow-[0_40px_120px_-30px_rgba(124,92,255,0.55)]">
+              <div className="overflow-hidden rounded-[1.45rem] bg-[#0b0b12]/95 backdrop-blur-xl">
+                <div className="flex items-center gap-2 border-b border-white/[0.06] px-5 py-4">
+                  <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+                  <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+                  <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+                  <span className="ml-3 font-mono text-xs text-subtle">RepaymentController.java</span>
+                </div>
+                <pre className="overflow-x-auto px-5 py-5 font-mono text-[12.5px] leading-7 sm:text-[13px]">
+                  <code>
+                    {codeLines.map((line, i) => (
+                      <div key={i} className="flex">
+                        <span className="mr-5 w-4 select-none text-right text-white/20">{i + 1}</span>
+                        <span>
+                          {line.map(([cls, txt], j) => (
+                            <span key={j} className={cls}>
+                              {txt}
+                            </span>
+                          ))}
+                        </span>
+                      </div>
+                    ))}
+                  </code>
+                </pre>
+                <div className="flex items-center justify-between border-t border-white/[0.06] px-5 py-3 font-mono text-[11px] text-subtle">
+                  <span className="flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> 200 OK · 38ms
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Floating badges */}
+          <div className="glass !bg-[#0e0e17]/90 animate-float absolute z-10 -top-10 right-6 hidden rounded-2xl px-4 py-3 text-sm sm:block" style={{ animationDelay: "-2s" }}>
+            <p className="text-xs text-subtle">Uptime</p>
+            <p className="font-semibold text-white">99.9%</p>
+          </div>
+          <div className="glass !bg-[#0e0e17]/90 animate-float absolute z-10 -bottom-9 right-8 hidden rounded-2xl px-4 py-3 text-sm sm:block">
+            <p className="text-xs text-subtle">Currently at</p>
+            <p className="font-semibold text-white">Volt Money</p>
+          </div>
+        </Reveal>
+      </div>
+
+      {/* Scroll cue */}
+      <div aria-hidden="true" className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-subtle md:flex">
+        Scroll
+        <span className="relative h-10 w-px overflow-hidden bg-white/10">
+          <span className="animate-[scroll-cue_2s_var(--ease)_infinite] absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-transparent to-white" />
+        </span>
       </div>
     </section>
   );

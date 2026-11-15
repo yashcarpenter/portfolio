@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import Link from "next/link";
+import PageHero from "../components/ui/PageHero";
+import SectionHeading from "../components/ui/SectionHeading";
+import Reveal from "../components/motion/Reveal";
+import { ArrowUpRight, Briefcase, Check, GitHubIcon } from "../components/ui/Icons";
+import { cn, delay } from "../lib/utils";
 
 interface Project {
   id: number;
@@ -91,317 +94,258 @@ const projects: Project[] = [
 
 const categories = ["All", "Backend", "Full Stack"];
 
+const timeline = [
+  {
+    year: "Dec 2024 – Present",
+    title: "Software Developer Engineer",
+    company: "Volt Money",
+    location: "Bengaluru, India",
+    description: "Backend Developer utilizing Java, Spring Boot, PostgreSQL, AWS, and other backend technologies to develop, deploy, and maintain scalable microservices, ensuring high system availability, performance, and resilience.",
+    details: [
+      "Owned and managed multiple microservices within the Lending Stack Team (DSP)",
+      "Integrated with PhonePe's Loan Against Mutual Fund (LAMF) flow",
+      "Built secure, real-time APIs for end-to-end repayment lifecycle"
+    ],
+    current: true,
+  },
+  {
+    year: "Jan 2024 – Jul 2024",
+    title: "Software Engineer Intern",
+    company: "Groww",
+    location: "Bengaluru, India",
+    description: "Developed centralized repository using Spring Boot, MySQL, Prometheus and GCP APIs, reducing dependency failure resolution time by 30%.",
+    details: [
+      "Architected MySQL schema with advanced indexing and partitioning, lowering query execution time by 40%",
+      "Implemented session termination feature in logout flow, improving security compliance by 25%",
+      "Integrated services with Argo, reducing deployment time by 35%",
+      "Developed APIs and optimized code, resulting in 20% increase in processing speed"
+    ],
+    current: false,
+  }
+];
+
+/** Placeholder links ("#") are hidden rather than rendered as dead links. */
+const isRealUrl = (url?: string) => !!url && url !== "#";
+
+function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const [expanded, setExpanded] = useState(false);
+  const features = expanded ? project.features : project.features.slice(0, 3);
+  const techs = expanded ? project.technologies : project.technologies.slice(0, 4);
+  const detailsId = `project-${project.id}-details`;
+
+  return (
+    <article className="spotlight pop-in group flex h-full flex-col overflow-hidden" style={delay(index * 90)}>
+      {/* Visual header */}
+      <div className="relative h-44 overflow-hidden border-b border-white/[0.06]">
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 transition-transform duration-[1.2s] ease-[var(--ease)] group-hover:scale-110"
+          style={{
+            background: `radial-gradient(circle at ${20 + index * 20}% 30%, rgba(124,92,255,0.45), transparent 55%), radial-gradient(circle at ${80 - index * 15}% 90%, rgba(34,211,238,0.3), transparent 50%)`,
+          }}
+        />
+        <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-80" />
+        <div className="relative flex h-full items-end justify-between p-6">
+          <span className="font-mono text-6xl font-semibold text-white/10 transition-colors duration-700 group-hover:text-white/25">
+            0{project.id}
+          </span>
+          <span className="chip backdrop-blur">{project.category}</span>
+        </div>
+      </div>
+
+      <div className="flex flex-1 flex-col p-7">
+        <h3 className="text-2xl font-semibold tracking-tight text-white">{project.title}</h3>
+        <p className="mt-3 leading-relaxed text-muted">{project.description}</p>
+
+        <div className="mt-5 flex items-start gap-3 rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] px-4 py-3 text-sm text-emerald-200">
+          <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-emerald-400" />
+          <span>
+            <span className="font-semibold">Impact:</span> {project.impact}
+          </span>
+        </div>
+
+        <div id={detailsId}>
+          <h4 className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-subtle">Key features</h4>
+          <ul className="mt-3 space-y-2">
+            {features.map((f, i) => (
+              <li key={f} className={cn("flex items-start gap-3 text-sm text-muted", i >= 3 && "pop-in")} style={delay((i - 3) * 50)}>
+                <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-a2" />
+                {f}
+              </li>
+            ))}
+          </ul>
+
+          <h4 className="mt-6 text-xs font-semibold uppercase tracking-[0.14em] text-subtle">Technologies</h4>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {techs.map((t) => (
+              <span key={t} className="chip">
+                {t}
+              </span>
+            ))}
+            {!expanded && project.technologies.length > 4 && (
+              <span className="chip text-subtle">+{project.technologies.length - 4} more</span>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-auto flex items-center justify-between pt-8">
+          {project.features.length > 3 || project.technologies.length > 4 ? (
+            <button
+              type="button"
+              onClick={() => setExpanded((e) => !e)}
+              aria-expanded={expanded}
+              aria-controls={detailsId}
+              className="link-underline text-sm font-semibold text-white"
+            >
+              {expanded ? "Show less" : `View details (+${Math.max(0, project.features.length - 3)} features)`}
+            </button>
+          ) : (
+            <span />
+          )}
+          <div className="flex gap-2">
+            {isRealUrl(project.liveUrl) && (
+              <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} live demo`} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-muted transition-colors hover:border-white/30 hover:text-white">
+                <ArrowUpRight className="h-4 w-4" />
+              </a>
+            )}
+            {isRealUrl(project.githubUrl) && (
+              <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" aria-label={`${project.title} on GitHub`} className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-muted transition-colors hover:border-white/30 hover:text-white">
+                <GitHubIcon className="h-4 w-4" />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export default function WorkPage() {
   const [activeFilter, setActiveFilter] = useState("All");
-  const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation();
-  const { ref: projectsRef, isVisible: projectsVisible } = useScrollAnimation();
 
   const filteredProjects = activeFilter === "All"
     ? projects
     : projects.filter(project => project.category === activeFilter);
 
-  const timeline = [
-    {
-      year: "Dec 2024 – Present",
-      title: "Software Developer Engineer",
-      company: "Volt Money",
-      location: "Bengaluru, India",
-      description: "Backend Developer utilizing Java, Spring Boot, PostgreSQL, AWS, and other backend technologies to develop, deploy, and maintain scalable microservices, ensuring high system availability, performance, and resilience.",
-      details: [
-        "Owned and managed multiple microservices within the Lending Stack Team (DSP)",
-        "Integrated with PhonePe's Loan Against Mutual Fund (LAMF) flow",
-        "Built secure, real-time APIs for end-to-end repayment lifecycle"
-      ]
-    },
-    {
-      year: "Jan 2024 – Jul 2024",
-      title: "Software Engineer Intern",
-      company: "Groww",
-      location: "Bengaluru, India",
-      description: "Developed centralized repository using Spring Boot, MySQL, Prometheus and GCP APIs, reducing dependency failure resolution time by 30%.",
-      details: [
-        "Architected MySQL schema with advanced indexing and partitioning, lowering query execution time by 40%",
-        "Implemented session termination feature in logout flow, improving security compliance by 25%",
-        "Integrated services with Argo, reducing deployment time by 35%",
-        "Developed APIs and optimized code, resulting in 20% increase in processing speed"
-      ]
-    }
-  ];
+  const activeIndex = categories.indexOf(activeFilter);
 
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-      <main>
-        {/* Hero Section */}
-            <section 
-              ref={heroRef}
-              className={`pt-20 pb-4 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-gray-100 transition-all duration-1000 ${
-                heroVisible 
-                  ? 'opacity-100 translate-y-0' 
-                  : 'opacity-0 translate-y-8'
-              }`}
-              style={{ paddingTop: '80px' }}
-            >
-          <div className="max-w-7xl mx-auto text-center">
-            <div className="inline-flex items-center px-6 py-3 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-8 shadow-sm">
-              Portfolio & Experience
-            </div>
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 mb-8 leading-tight">
-              My Work &
-              <span className="block text-blue-600 mt-2">Professional Journey</span>
-            </h1>
-            <p className="text-xl sm:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed mb-12">
-              A showcase of my professional experience and projects, featuring innovative solutions and cutting-edge technologies that solve real-world problems.
-            </p>
-            
-            {/* Quick Stats */}
-            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">6+</div>
-                <div className="text-gray-600 font-medium">Projects</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-purple-600 mb-2">1+</div>
-                <div className="text-gray-600 font-medium">Companies</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-green-600 mb-2">100%</div>
-                <div className="text-gray-600 font-medium">Success Rate</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl sm:text-4xl font-bold text-orange-600 mb-2">24/7</div>
-                <div className="text-gray-600 font-medium">Innovation</div>
-              </div>
-            </div> */}
-          </div>
-        </section>
+    <>
+      <PageHero
+        eyebrow="Portfolio & experience"
+        title="My work &"
+        accent="professional journey"
+        description="A showcase of my professional experience and projects, featuring innovative solutions and cutting-edge technologies that solve real-world problems."
+      />
 
-        {/* Professional Experience Section */}
-        <section 
-          ref={projectsRef}
-          className={`py-16 px-4 sm:px-6 lg:px-8 bg-white mt-0 transition-all duration-1000 ${
-            projectsVisible 
-              ? 'opacity-100 translate-y-0' 
-              : 'opacity-0 translate-y-8'
-          }`}
-        >
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-20">
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-                Professional Experience
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                My journey in backend development across different companies and roles
-              </p>
-            </div>
+      {/* Experience */}
+      <section className="pb-28 sm:pb-36">
+        <div className="container-x">
+          <SectionHeading
+            align="left"
+            eyebrow="Experience"
+            title="Professional"
+            accent="experience."
+            description="My journey in backend development across different companies and roles."
+          />
 
-            <div className="relative">
-              {/* Timeline Line */}
-              <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+          <div className="relative">
+            <div aria-hidden="true" className="absolute bottom-0 left-6 top-0 w-px bg-gradient-to-b from-a1 via-a2/40 to-transparent md:left-1/2" />
+            <ol className="space-y-12">
+              {timeline.map((item, i) => {
+                const right = i % 2 === 1;
+                return (
+                  <li key={item.company} className="relative md:grid md:grid-cols-2 md:gap-16">
+                    {/* Node */}
+                    <span className="absolute left-0 top-6 z-10 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-[#0b0b12] text-a2 shadow-[0_0_40px_-5px] shadow-a1/60 md:left-1/2 md:-translate-x-1/2">
+                      {item.current && <span className="animate-ping-soft absolute inset-2 rounded-full bg-a1/40" />}
+                      <Briefcase className="relative h-5 w-5" />
+                    </span>
 
-              {timeline.map((item, index) => (
-                <div key={index} className="relative flex items-start space-x-6 group mb-12">
-                  {/* Timeline Dot */}
-                  <div className="relative z-10 flex-shrink-0 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
-                    <div className="w-3 h-3 bg-white rounded-full"></div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <div className="bg-gray-50 rounded-lg p-8 shadow-sm border border-gray-200">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-sm font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-md">
-                          {item.year}
-                        </span>
+                    <Reveal
+                      variant={right ? "right" : "left"}
+                      className={cn("pl-20 md:pl-0", right ? "md:col-start-2" : "md:col-start-1 md:text-right")}
+                    >
+                      <div className="spotlight p-8 text-left">
+                        <div className="flex flex-wrap items-center gap-3">
+                          <span className="font-mono text-xs text-a2">{item.year}</span>
+                          {item.current && (
+                            <span className="rounded-full bg-emerald-400/10 px-2.5 py-0.5 text-[11px] font-medium text-emerald-300">Current</span>
+                          )}
+                        </div>
+                        <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white">{item.title}</h3>
+                        <p className="mt-1 font-medium text-white/70">
+                          {item.company} <span className="text-subtle">· {item.location}</span>
+                        </p>
+                        <p className="mt-4 leading-relaxed text-muted">{item.description}</p>
+                        <ul className="mt-5 space-y-2.5">
+                          {item.details.map((d) => (
+                            <li key={d} className="flex items-start gap-3 text-sm text-muted">
+                              <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-a2" />
+                              {d}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                      <p className="text-lg font-medium text-gray-600 mb-4">{item.company} • {item.location}</p>
-                      <p className="text-gray-600 leading-relaxed mb-6 text-lg">{item.description}</p>
-                      <ul className="space-y-3">
-                        {item.details.map((detail, detailIndex) => (
-                          <li key={detailIndex} className="text-gray-600 flex items-center">
-                            <span className="w-2 h-2 bg-blue-500 rounded-full bullet-margin flex-shrink-0 mt-0.5"></span>
-                            {detail}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                    </Reveal>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Projects Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gray-50 mt-16">
-          <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-                Featured Projects
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                A collection of projects that showcase my technical skills and problem-solving abilities
-              </p>
-            </div>
+      {/* Projects */}
+      <section className="py-28 sm:py-36">
+        <div className="container-x">
+          <SectionHeading
+            eyebrow="Selected work"
+            title="Featured"
+            accent="projects."
+            description="A collection of projects that showcase my technical skills and problem-solving abilities."
+          />
 
-            {/* Filter Tabs */}
-            <div className="flex flex-wrap justify-center gap-4 mb-16">
+          {/* Filter with sliding indicator */}
+          <Reveal className="mb-12 flex justify-center">
+            <div role="tablist" aria-label="Filter projects" className="glass relative inline-flex rounded-full p-1.5">
+              <span
+                aria-hidden="true"
+                className="absolute bottom-1.5 top-1.5 rounded-full bg-white transition-transform duration-500 ease-[var(--ease)]"
+                style={{ width: "7.5rem", transform: `translateX(${activeIndex * 7.5}rem)` }}
+              />
               {categories.map((category) => (
                 <button
                   key={category}
+                  type="button"
+                  role="tab"
+                  aria-selected={activeFilter === category}
                   onClick={() => setActiveFilter(category)}
-                  className={`px-6 py-3 rounded-md font-semibold transition-colors duration-200 ${
-                    activeFilter === category
-                      ? "bg-blue-600 text-white"
-                      : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
-                  }`}
+                  className={cn(
+                    "relative z-10 w-[7.5rem] rounded-full py-2.5 text-sm font-semibold transition-colors duration-500",
+                    activeFilter === category ? "text-black" : "text-muted hover:text-white"
+                  )}
                 >
                   {category}
                 </button>
               ))}
             </div>
+          </Reveal>
 
-            {/* Projects Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {filteredProjects.map((project) => (
-                <div
-                  key={project.id}
-                  className="bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-300"
-                >
-                  {/* Project Image Placeholder */}
-                  <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 rounded-t-lg flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                        </svg>
-                      </div>
-                      <span className="text-sm font-medium text-gray-600">{project.category}</span>
-                    </div>
-                  </div>
-
-                  <div className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <h3 className="text-xl font-bold text-gray-900">{project.title}</h3>
-                      <span className="px-3 py-1 bg-gray-100 text-gray-600 text-sm font-medium rounded-md">
-                        {project.category}
-                      </span>
-                    </div>
-                    
-                    <p className="text-gray-600 leading-relaxed mb-4">
-                      {project.description}
-                    </p>
-                    
-                    <div className="bg-green-50 border border-green-200 rounded-md p-3 mb-6">
-                      <p className="text-sm text-green-700 font-medium">
-                        Impact: {project.impact}
-                      </p>
-                    </div>
-
-                    <div className="mb-6">
-                      <h4 className="text-sm font-semibold text-gray-900 mb-3">Key Features</h4>
-                      <ul className="space-y-2">
-                        {project.features.slice(0, 3).map((feature, index) => (
-                          <li key={index} className="text-sm text-gray-600 flex items-center">
-                            <span className="w-1.5 h-1.5 bg-blue-500 rounded-full bullet-margin flex-shrink-0 mt-0.5"></span>
-                            {feature}
-                          </li>
-                        ))}
-                        {project.features.length > 3 && (
-                          <li className="text-sm text-gray-500">
-                            +{project.features.length - 3} more features
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-
-                    <div className="mb-6">
-                      <h4 className="text-sm font-semibold text-gray-900 mb-3">Technologies Used</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.slice(0, 4).map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-3 py-1 bg-gray-100 text-gray-700 text-sm font-medium rounded-md"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.technologies.length > 4 && (
-                          <span className="px-3 py-1 bg-gray-100 text-gray-500 text-sm font-medium rounded-md">
-                            +{project.technologies.length - 4} more
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <button className="flex items-center text-blue-600 font-semibold hover:text-blue-700 transition-colors">
-                        <span className="mr-2">View Details</span>
-                        <svg
-                          className="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </button>
-                      <div className="flex space-x-2">
-                        {project.liveUrl && (
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
-                            title="Live Demo"
-                          >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                          </a>
-                        )}
-                        {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2 text-gray-400 hover:text-blue-600 transition-colors"
-                            title="GitHub Repository"
-                          >
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                            </svg>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* View All Projects Button */}
-            <div className="text-center mt-16">
-              <a
-                href="/contact"
-                className="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-colors duration-200"
-              >
-                <span className="mr-2">Interested in Working Together?</span>
-                
-              </a>
-            </div>
+          <div key={activeFilter} className="grid gap-6 lg:grid-cols-2">
+            {filteredProjects.map((project, i) => (
+              <ProjectCard key={project.id} project={project} index={i} />
+            ))}
           </div>
-        </section>
-      </main>
-      <div className="mt-16">
-        <Footer />
-      </div>
-    </div>
+
+          <div className="mt-16 text-center">
+            <Link href="/contact" data-magnetic="0.2" className="btn btn-primary">
+              <span className="relative">Interested in working together?</span>
+              <ArrowUpRight className="btn-arrow relative h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
