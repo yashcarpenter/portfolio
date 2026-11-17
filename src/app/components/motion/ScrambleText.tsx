@@ -1,7 +1,7 @@
 "use client";
 
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
-import { hasFinePointer, prefersReducedMotion } from "../../lib/utils";
+import { Fragment, useEffect, useRef, useState } from "react";
+import { prefersReducedMotion } from "../../lib/utils";
 import { useInView } from "./Reveal";
 
 const GLYPHS = "!<>-_/[]{}=+*^?#01ABCDEFXYZ$%&";
@@ -15,31 +15,29 @@ interface ScrambleTextProps {
   segments: ScrambleSegment[];
   /** Delay (ms) after the text scrolls into view. */
   delay?: number;
-  /** Re-decode on mouse hover (desktop only). */
-  replayOnHover?: boolean;
   className?: string;
 }
 
 /**
- * Decodes text left-to-right from random glyphs once it scrolls into view.
- * Every character keeps the width of its final glyph (a hidden copy sits in the
- * same grid cell), so lines never reflow mid-animation on narrow phone screens.
- * Words never break internally; lines wrap only between words.
+ * Decodes text left-to-right from random glyphs, once, when it scrolls into view.
+ *
+ * Layout never moves: each letter slot is sized by an invisible copy of its
+ * final character, and the random glyph is absolutely positioned on top of it,
+ * so a wide glyph (e.g. "W" over an "i") can't widen the slot, re-wrap the line
+ * or push the content below. Words never break internally.
  */
-export default function ScrambleText({ segments, delay = 0, replayOnHover = true, className }: ScrambleTextProps) {
+export default function ScrambleText({ segments, delay = 0, className }: ScrambleTextProps) {
   const full = segments.map((s) => s.text).join(" ");
   const { ref, inView } = useInView<HTMLSpanElement>(0.2);
   const [glyphs, setGlyphs] = useState<string[] | null>(null); // null = not started (blank)
   const raf = useRef(0);
-  const running = useRef(false);
 
-  const run = useCallback(() => {
+  useEffect(() => {
+    if (!inView) return;
     if (prefersReducedMotion()) {
       setGlyphs(full.split(""));
       return;
     }
-    cancelAnimationFrame(raf.current);
-    running.current = true;
     const chars = full.split("");
     const perChar = Math.max(18, Math.min(40, 900 / chars.length)); // long headings decode a bit faster
     const settle = 350;
@@ -57,27 +55,17 @@ export default function ScrambleText({ segments, delay = 0, replayOnHover = true
       });
       setGlyphs(next);
       if (done < chars.length) raf.current = requestAnimationFrame(tick);
-      else running.current = false;
     };
-    raf.current = requestAnimationFrame(tick);
-  }, [full]);
-
-  useEffect(() => {
-    if (!inView) return;
-    const timer = setTimeout(run, delay);
+    const timer = setTimeout(() => (raf.current = requestAnimationFrame(tick)), delay);
     return () => {
       clearTimeout(timer);
       cancelAnimationFrame(raf.current);
     };
-  }, [inView, delay, run]);
-
-  const onEnter = () => {
-    if (replayOnHover && !running.current && glyphs && hasFinePointer()) run();
-  };
+  }, [inView, delay, full]);
 
   let index = 0;
   return (
-    <span ref={ref} aria-hidden="true" className={className} onMouseEnter={onEnter}>
+    <span ref={ref} aria-hidden="true" className={className}>
       {segments.map((seg, s) => {
         const words = seg.text.split(" ");
         return (
@@ -93,8 +81,14 @@ export default function ScrambleText({ segments, delay = 0, replayOnHover = true
                     <span className="whitespace-nowrap">
                       {word.split("").map((ch, c) => (
                         <span key={c} className="inline-grid">
+                          {/* Fixed-size slot: always the width of the final letter */}
                           <span className="invisible [grid-area:1/1]">{ch}</span>
-                          <span className="text-center [grid-area:1/1]">{glyphs ? glyphs[base + c] : ""}</span>
+                          {/* Scrambling glyph sits in a zero-width, centred column, so it overflows the
+                              slot instead of resizing it. No positioning: gradient (background-clip:text)
+                              segments can't paint positioned descendants. */}
+                          <span className="flex w-0 justify-center justify-self-center whitespace-pre [grid-area:1/1]">
+                            {glyphs ? glyphs[base + c] : ""}
+                          </span>
                         </span>
                       ))}
                     </span>
