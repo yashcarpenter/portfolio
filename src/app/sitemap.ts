@@ -1,44 +1,16 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from "next";
+import { homeNavItem, navItems } from "@/content/site";
+import { siteUrl } from "@/lib/seo";
 
+const priority: Record<string, number> = { "/": 1, "/work": 0.9, "/about": 0.8, "/contact": 0.8, "/skills": 0.7 };
+
+/** One entry per real page, generated from the navigation so new pages are picked up automatically. */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://yashcarpenter.dev'
-  
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/#about`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#work`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#skills`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
-    },
-    {
-      url: `${baseUrl}/#testimonials`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/#contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-  ]
+  const lastModified = new Date();
+  return [homeNavItem, ...navItems].map(({ href }) => ({
+    url: `${siteUrl}${href === "/" ? "" : href}`,
+    lastModified,
+    changeFrequency: "monthly",
+    priority: priority[href] ?? 0.5,
+  }));
 }

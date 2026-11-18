@@ -1,13 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Background from "./components/motion/Background";
-import MotionEffects from "./components/motion/MotionEffects";
-import SmoothScroll from "./components/motion/SmoothScroll";
-import CustomCursor from "./components/motion/CustomCursor";
-import { CurtainProvider } from "./components/motion/Curtain";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import Background from "@/components/motion/Background";
+import MotionEffects from "@/components/motion/MotionEffects";
+import SmoothScroll from "@/components/motion/SmoothScroll";
+import CustomCursor from "@/components/motion/CustomCursor";
+import RouteTransition from "@/components/motion/RouteTransition";
+import { site } from "@/content/site";
+import { siteUrl } from "@/lib/seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,17 +28,25 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
+const defaultTitle = `${site.name} · ${site.role}`;
+
+/** Site-wide defaults. Each page overrides title/description/canonical via `pageMetadata()`. */
 export const metadata: Metadata = {
-  title: "Yash Carpenter - Backend Developer",
-  description: "Crafting robust, scalable backend solutions that power exceptional digital experiences. Backend developer with 5+ years of experience.",
-  keywords: "backend developer, Node.js, Python, API development, microservices, database design",
-  authors: [{ name: "Yash Carpenter" }],
-  alternates: { canonical: "https://yashcarpenter.dev" },
+  metadataBase: new URL(siteUrl),
+  title: { default: defaultTitle, template: `%s · ${site.name}` },
+  description: site.description,
+  keywords: site.keywords,
+  authors: [{ name: site.name, url: siteUrl }],
+  creator: site.name,
   openGraph: {
-    title: "Yash Carpenter - Backend Developer",
-    description: "Crafting robust, scalable backend solutions that power exceptional digital experiences.",
     type: "website",
+    siteName: site.name,
+    locale: "en_IN",
+    url: "/",
+    title: defaultTitle,
+    description: site.description,
   },
+  twitter: { card: "summary", title: defaultTitle, description: site.description },
 };
 
 export const viewport: Viewport = {
@@ -63,13 +73,13 @@ export default function RootLayout({
         <SmoothScroll />
         <MotionEffects />
         <CustomCursor />
-        <CurtainProvider>
+        <RouteTransition>
           <Header />
           <main id="main" className="relative">
             {children}
           </main>
           <Footer />
-        </CurtainProvider>
+        </RouteTransition>
       </body>
     </html>
   );

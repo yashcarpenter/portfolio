@@ -271,6 +271,20 @@
     animation: spin-angle 6s linear infinite;
   }
 
+  /* Animated conic border drawn inside an element (for cards that need their own ::before/::after) */
+  .border-conic {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: conic-gradient(from var(--angle, 0deg), var(--a1), var(--a2), var(--a3), var(--a1));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    animation: spin-angle 6s linear infinite;
+  }
+
   /* Chips */
   .chip {
     display: inline-flex;
@@ -437,7 +451,7 @@
   transform: none;
 }
 
-/* Route transition (components/motion/Curtain.tsx): the page softly fades out
+/* Route transition (components/motion/RouteTransition.tsx): the page softly fades out
    before navigating; the new page fades in via .page-enter. */
 html[data-nav="leaving"] #main,
 html[data-nav="leaving"] body > footer,

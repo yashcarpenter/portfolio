@@ -37,14 +37,19 @@ Sent from: Your Portfolio Website
 - Dashboard → Account → General
 - Copy Public Key: `xxxxxxxxxxxxxxxxx`
 
-### 5. Update Code
-Replace these values in `src/app/contact/page.tsx`:
+### 5. Configure the IDs
+Set them as environment variables (`.env.local` locally, Vercel → Settings → Environment Variables in production):
 
-```typescript
-const serviceId = 'service_xxxxxxxxx'; // Your service ID
-const templateId = 'template_xxxxxxxxx'; // Your template ID  
-const publicKey = 'xxxxxxxxxxxxxxxxx'; // Your public key
+```bash
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_xxxxxxxxx
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=template_xxxxxxxxx
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=xxxxxxxxxxxxxxxxx
 ```
+
+If unset, the defaults in `src/lib/emailjs.ts` are used.
+
+### 6. Restrict allowed origins
+These IDs ship to the browser, so anyone can read them. In the EmailJS dashboard (Account → Security), allow only your live domain(s) so others can't send mail through your account.
 
 ## Test Your Setup
 
