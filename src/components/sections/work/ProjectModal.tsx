@@ -5,7 +5,8 @@ import { motion } from "motion/react";
 import { setScrollLocked } from "@/components/motion/SmoothScroll";
 import { ArrowUpRight, Check, GitHubIcon } from "@/components/ui/Icons";
 import { isRealUrl, type Project } from "@/content/projects";
-import { ImpactNote, RolePill, StatusBadge, projectLabel, spring, visualStyle } from "./ProjectCard";
+import { cn } from "@/lib/utils";
+import { BrowserPreview, ImpactNote, RolePill, StatusBadge, liveLinkLabel, projectLabel, spring, visualStyle } from "./ProjectCard";
 
 interface ProjectModalProps {
   project: Project;
@@ -56,7 +57,10 @@ export default function ProjectModal({ project, index, onClose }: ProjectModalPr
           <motion.div
             layoutId={`project-visual-${project.id}`}
             transition={spring}
-            className="relative h-44 overflow-hidden border-b border-white/[0.06] sm:h-56"
+            className={cn(
+              "relative overflow-hidden border-b border-white/[0.06]",
+              project.preview ? "h-56 sm:h-72" : "h-44 sm:h-56"
+            )}
           >
             <div aria-hidden="true" className="absolute inset-0" style={visualStyle(index)} />
             <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-80" />
@@ -65,10 +69,22 @@ export default function ProjectModal({ project, index, onClose }: ProjectModalPr
                 <StatusBadge status={project.status} />
               </a>
             )}
-            <div className="relative flex h-full items-end justify-between p-6">
-              <span className="font-mono text-7xl font-semibold text-white/20">{String(index + 1).padStart(2, "0")}</span>
-              <span className="chip backdrop-blur">{projectLabel(project)}</span>
-            </div>
+            {project.preview ? (
+              <>
+                <span className="chip absolute right-6 top-6 z-[1] backdrop-blur">{projectLabel(project)}</span>
+                <BrowserPreview
+                  src={project.preview}
+                  url={project.liveUrl}
+                  title={project.title}
+                  className="absolute inset-x-8 bottom-0 top-[4.5rem] sm:inset-x-14"
+                />
+              </>
+            ) : (
+              <div className="relative flex h-full items-end justify-between p-6">
+                <span className="font-mono text-7xl font-semibold text-white/20">{String(index + 1).padStart(2, "0")}</span>
+                <span className="chip backdrop-blur">{projectLabel(project)}</span>
+              </div>
+            )}
           </motion.div>
 
           <div className="p-6 sm:p-9">
@@ -120,7 +136,7 @@ export default function ProjectModal({ project, index, onClose }: ProjectModalPr
                 </button>
                 {isRealUrl(project.liveUrl) && (
                   <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="btn btn-ghost !h-11">
-                    {project.status === "production" ? "Visit live site" : "Try the demo"} <ArrowUpRight className="h-4 w-4" />
+                    {liveLinkLabel(project)} <ArrowUpRight className="h-4 w-4" />
                   </a>
                 )}
                 {isRealUrl(project.githubUrl) && (

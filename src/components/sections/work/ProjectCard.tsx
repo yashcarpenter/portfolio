@@ -1,6 +1,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import Image from "next/image";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "@/components/ui/Icons";
 import { isRealUrl, type Project } from "@/content/projects";
@@ -40,6 +41,12 @@ export const visualStyle = (index: number): CSSProperties => ({
 /** Industry projects show where they were built; independent ones show their category. */
 export const projectLabel = (p: Project) => (p.company ? `@ ${p.company}` : p.category);
 
+/** Button text for a project's live link. */
+export const liveLinkLabel = (p: Project) => (p.status === "production" ? "Visit live site" : "Try the demo");
+
+/** "www.example.com/" → "example.com" for the browser-frame address bar. */
+const hostOf = (url: string) => new URL(url).host.replace(/^www\./, "");
+
 export function ImpactNote({ impact }: { impact: string }) {
   return (
     <div className="mt-5 flex items-start gap-3 rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] px-4 py-3 text-sm text-emerald-200">
@@ -64,6 +71,40 @@ export function RolePill({ role }: { role: string }) {
   );
 }
 
+/** Screenshot of the live site in a small browser window, rising out of the visual panel. */
+export function BrowserPreview({ src, url, title, className }: { src: string; url?: string; title: string; className?: string }) {
+  return (
+    <div
+      className={cn(
+        "overflow-hidden rounded-t-xl border border-b-0 border-white/15 bg-[#0b0b12] shadow-[0_-20px_60px_-20px_rgba(124,92,255,0.45)]",
+        className
+      )}
+    >
+      <div className="flex items-center gap-2 border-b border-white/10 bg-white/[0.04] px-3 py-2">
+        <span className="flex gap-1.5" aria-hidden="true">
+          <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+          <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
+          <span className="h-2 w-2 rounded-full bg-[#28c840]" />
+        </span>
+        {url && (
+          <span className="mx-auto truncate rounded-md bg-white/[0.06] px-3 py-0.5 font-mono text-[0.65rem] text-white/60">
+            {hostOf(url)}
+          </span>
+        )}
+      </div>
+      <div className="relative aspect-[16/10] w-full">
+        <Image
+          src={src}
+          alt={`Screenshot of ${title}`}
+          fill
+          sizes="(min-width: 1024px) 480px, 100vw"
+          className="object-cover object-top"
+        />
+      </div>
+    </div>
+  );
+}
+
 const MAX_CHIPS = 5;
 
 interface ProjectCardProps {
@@ -75,12 +116,17 @@ interface ProjectCardProps {
 }
 
 /**
- * Wide showcase card: visual panel (headline figure) + content, alternating sides on desktop,
- * stacked on phones. Shares layoutIds with ProjectModal, so it expands into the dialog.
+ * Wide showcase card: visual panel (site preview or headline figure) + content, alternating sides
+ * on desktop, stacked on phones. Shares layoutIds with ProjectModal, so it expands into the dialog.
+ *
+ * Whole card opens the details ("stretched" button: its ::after covers the card). Real links
+ * (live site, status badge) sit above that layer, so they stay clickable on their own.
  */
 export default function ProjectCard({ project, index, total, onOpen }: ProjectCardProps) {
   const flip = index % 2 === 1;
   const number = String(index + 1).padStart(2, "0");
+  const live = isRealUrl(project.liveUrl) ? project.liveUrl : undefined;
+  const preview = project.preview;
 
   return (
     <motion.article
@@ -92,20 +138,14 @@ export default function ProjectCard({ project, index, total, onOpen }: ProjectCa
     >
       {project.featured && <span aria-hidden="true" className="border-conic z-20" />}
 
-      <button
-        type="button"
-        onClick={onOpen}
-        data-cursor-label="View"
-        aria-haspopup="dialog"
-        aria-label={`Open details for ${project.title}`}
-        className="grid w-full text-left lg:min-h-[25rem] lg:grid-cols-12"
-      >
+      <div className="grid lg:min-h-[25rem] lg:grid-cols-12">
         {/* Visual panel */}
         <motion.div
           layoutId={`project-visual-${project.id}`}
           transition={spring}
           className={cn(
-            "relative h-52 overflow-hidden border-b border-white/[0.06] sm:h-60 lg:col-span-5 lg:h-auto lg:border-b-0",
+            "relative overflow-hidden border-b border-white/[0.06] lg:col-span-5 lg:h-auto lg:border-b-0",
+            preview ? "h-64 sm:h-80" : "h-52 sm:h-60",
             flip ? "lg:order-2 lg:border-l" : "lg:border-r"
           )}
         >
@@ -115,16 +155,33 @@ export default function ProjectCard({ project, index, total, onOpen }: ProjectCa
             style={visualStyle(index)}
           />
           <div aria-hidden="true" className="bg-grid absolute inset-0 opacity-80" />
+          <span className="chip absolute right-5 top-5 z-[1] backdrop-blur">{projectLabel(project)}</span>
 
-          <div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
-            <span className="chip absolute right-5 top-5 backdrop-blur">{projectLabel(project)}</span>
-            {project.highlight && (
-              <div>
+          {preview ? (
+            <>
+              {/* Desktop panels are taller than the frame: use the space above it for the headline figure. */}
+              {project.highlight && (
+                <div className="absolute inset-x-8 top-[5.25rem] hidden lg:block">
+                  <p className="text-gradient text-5xl font-semibold tracking-tight">{project.highlight.value}</p>
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/60">{project.highlight.label}</p>
+                </div>
+              )}
+              <BrowserPreview
+                src={preview}
+                url={live}
+                title={project.title}
+                // Phones: frame fills the panel. Desktop: natural height, anchored to the bottom.
+                className="absolute inset-x-6 bottom-0 top-[4.25rem] transition-transform duration-700 ease-[var(--ease)] group-hover:-translate-y-2 sm:inset-x-10 lg:inset-x-8 lg:top-auto"
+              />
+            </>
+          ) : (
+            project.highlight && (
+              <div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
                 <p className="text-gradient text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl">{project.highlight.value}</p>
                 <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/60">{project.highlight.label}</p>
               </div>
-            )}
-          </div>
+            )
+          )}
         </motion.div>
 
         {/* Content */}
@@ -157,21 +214,44 @@ export default function ProjectCard({ project, index, total, onOpen }: ProjectCa
             )}
           </div>
 
-          <span className="mt-auto flex items-center gap-2 pt-7 text-sm font-semibold text-white">
-            <span className="link-underline">View details</span>
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-          </span>
+          <div className="mt-auto flex flex-wrap items-center gap-x-6 gap-y-4 pt-7">
+            {live && (
+              <a
+                href={live}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-magnetic="0.15"
+                aria-label={`${liveLinkLabel(project)}: ${project.title} (opens in a new tab)`}
+                className="btn btn-primary relative z-10 !h-11"
+              >
+                <span className="relative">{liveLinkLabel(project)}</span>
+                <ArrowUpRight className="btn-arrow relative h-4 w-4" />
+              </a>
+            )}
+            <button
+              type="button"
+              onClick={onOpen}
+              data-cursor-label="View"
+              aria-haspopup="dialog"
+              aria-label={`Open details for ${project.title}`}
+              // ::after stretches over the whole card, so clicking anywhere opens the details.
+              className="flex items-center gap-2 text-sm font-semibold text-white after:absolute after:inset-0 after:rounded-[1.25rem] after:content-[''] focus-visible:outline-none focus-visible:after:outline focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-a2"
+            >
+              <span className="link-underline">View details</span>
+              <ArrowUpRight className="h-4 w-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            </button>
+          </div>
         </div>
-      </button>
+      </div>
 
-      {/* Live-site link sits outside the card's button (links can't nest inside buttons).
-          Pinned to the visual panel's top-left, which moves right on flipped desktop cards. */}
-      {isRealUrl(project.liveUrl) && (
+      {/* Status badge, pinned to the visual panel's top-left (moves right on flipped desktop cards). */}
+      {live && (
         <a
-          href={project.liveUrl}
+          href={live}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Open ${project.title} (${project.status === "production" ? "live site" : "demo"}) in a new tab`}
+          tabIndex={-1}
+          aria-hidden="true"
           className={cn("absolute left-5 top-5 z-10", flip && "lg:left-[calc(58.333%+1.25rem)]")}
         >
           <StatusBadge status={project.status} />

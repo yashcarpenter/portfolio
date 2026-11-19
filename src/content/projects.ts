@@ -33,8 +33,10 @@ export interface Project {
   /** Short role line shown on featured cards, e.g. "Leading the backend team". */
   role?: string;
   title: string;
-  /** Big headline figure on the card's visual panel. */
+  /** Big headline figure on the card's visual panel (used when there's no `preview`). */
   highlight?: { value: string; label: string };
+  /** Screenshot of the live site (in /public), shown in a browser frame on the card. 1440×900. */
+  preview?: string;
   description: string;
   technologies: string[];
   category: ProjectCategory;
@@ -53,6 +55,7 @@ export const projects: Project[] = [
     kind: "independent",
     title: "Grocery Store Management App",
     highlight: { value: "Live", label: "Real store, real customers" },
+    preview: "/projects/army-store.webp",
     description:
       "Store management app for Army Store, a real grocery and general store in Khilchipur, Madhya Pradesh. The owner manages inventory, categories and shop hours from a secure admin panel; customers browse the catalogue in English or Hindi and order on WhatsApp. Built as a React frontend wired straight to a Supabase (PostgreSQL) database.",
     technologies: ["React", "TypeScript", "Vite", "Supabase", "PostgreSQL", "Vercel", "Vitest"],
@@ -76,6 +79,7 @@ export const projects: Project[] = [
     kind: "independent",
     title: "Bargain Bell",
     highlight: { value: "3 stores", label: "Amazon · Flipkart · Myntra" },
+    preview: "/projects/bargain-bell.webp",
     description:
       "Price-drop tracker for Amazon, Flipkart and Myntra. Paste a product link, set a target price, and get alerted by email or Telegram when it drops, with full price history charts.",
     technologies: ["Java 17", "Spring Boot", "MySQL", "ReactJS", "Chart.js", "Telegram Bot API", "Docker", "Capacitor"],
